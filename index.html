@@ -3,34 +3,254 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Getty</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-    }
-    .card {
-      text-align: center;
-      padding: 3rem 4rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      backdrop-filter: blur(12px);
-    }
-    h1 { font-size: 4rem; letter-spacing: 0.2em; margin-bottom: 0.5rem; }
-    p  { color: rgba(255,255,255,0.6); font-size: 1.1rem; }
-  </style>
+  <title>Ghetty Motor-Home Beach Experience | Puerto Rico</title>
+  <meta name="description" content="Descubre las playas más espectaculares de Puerto Rico a bordo del Ghetty Motor-Home. Experiencias privadas para grupos de hasta 6 personas. Reserva ya tu aventura caribeña."/>
+  <meta property="og:title" content="Ghetty Motor-Home Beach Experience"/>
+  <meta property="og:description" content="Experiencias privadas de playa en Puerto Rico. Grupos de hasta 6 personas."/>
+  <meta property="og:image" content="assets/beach_hero.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="card">
-    <h1>Getty</h1>
-    <p>Próximamente algo increíble ✨</p>
-  </div>
+
+  <!-- ── NAV ── -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <img src="assets/logo.png" alt="Ghetty Motor-Home logo" class="nav-logo" width="56" height="56"/>
+      <span class="nav-brand">Ghetty Motor-Home</span>
+      <ul class="nav-links">
+        <li><a href="#experiencia">Experiencia</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#reservar" class="btn-nav">Reservar</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <ul class="mobile-menu" id="mobileMenu">
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#precios">Precios</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#reservar">Reservar</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-bg">
+      <img src="assets/beach_hero.png" alt="Playa de Puerto Rico" fetchpriority="high" width="1920" height="1080" class="hero-img"/>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">🌴 Puerto Rico</div>
+      <h1>La Playa,<br/><em>A Tu Manera</em></h1>
+      <p class="hero-sub">Experiencias privadas en el camper temático más chévere de la isla.<br/>Hasta 6 personas · Playas espectaculares · Ambiente 100% local</p>
+      <div class="hero-cta-group">
+        <a href="#reservar" class="btn-primary" id="hero-reserve-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          Reservar Ahora
+        </a>
+        <a href="#precios" class="btn-ghost">Ver Precios</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">6</span><span class="stat-label">Personas máx.</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">6–8h</span><span class="stat-label">De experiencia</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Local & auténtico</span></div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-dot"></div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="experiencia" class="section">
+    <div class="container">
+      <div class="section-tag">¿Qué es Ghetty?</div>
+      <h2 class="section-title">Puerto Rico desde adentro</h2>
+      <p class="section-sub">No somos un tour más. Somos una experiencia donde subes al camper, te relajas, y yo te llevo a las playas más auténticas de la isla.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚐</div>
+          <h3>Transporte Premium</h3>
+          <p>Camper temático puertorriqueño, cómodo y 100% seguro para disfrutar el trayecto.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏝️</div>
+          <h3>Playas Espectaculares</h3>
+          <p>Destinos seleccionados personalmente — los spots que los turistas no suelen encontrar.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🥤</div>
+          <h3>Agua & Refrigerios</h3>
+          <p>Incluidos en tu experiencia. Sal, nada, relájate sin preocuparte de nada.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📸</div>
+          <h3>Fotos & Memorias</h3>
+          <p>Tiempo libre para nadar, relajarte y capturar los mejores momentos de tu viaje.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>Ambiente Local</h3>
+          <p>Conéctate con la cultura y las historias de Puerto Rico. Nada de scripts turísticos.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👨‍👩‍👧‍👦</div>
+          <h3>Grupos Privados</h3>
+          <p>Ideal para familias, parejas, amigos. El camper es solo para tu grupo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section id="precios" class="section section-dark">
+    <div class="container">
+      <div class="section-tag light">Nuestros Paquetes</div>
+      <h2 class="section-title light">Elige tu Aventura</h2>
+      <p class="section-sub light">Precios transparentes, sin sorpresas. ¡Más personas = más ahorro!</p>
+
+      <div class="pricing-grid">
+        <!-- 6h -->
+        <div class="pricing-card">
+          <div class="pricing-emoji">🌴</div>
+          <h3 class="pricing-name">Experiencia Tropical</h3>
+          <div class="pricing-duration">6 horas</div>
+          <div class="pricing-options">
+            <div class="price-option featured">
+              <span class="price-label">Por persona</span>
+              <div class="price-amount"><sup>$</sup>79</div>
+            </div>
+            <div class="price-divider">ó</div>
+            <div class="price-option">
+              <span class="price-label">Grupo privado <small>(hasta 6)</small></span>
+              <div class="price-amount group"><sup>$</sup>450</div>
+            </div>
+          </div>
+          <ul class="pricing-includes">
+            <li>✅ Transporte en camper</li>
+            <li>✅ 2 playas incluidas</li>
+            <li>✅ Agua & refrigerios</li>
+            <li>✅ Guía local personalizado</li>
+          </ul>
+          <a href="#reservar" class="btn-price" id="reserve-6h">Reservar 6h</a>
+        </div>
+
+        <!-- 8h -->
+        <div class="pricing-card pricing-card--best">
+          <div class="best-badge">⭐ Más Popular</div>
+          <div class="pricing-emoji">🏝️</div>
+          <h3 class="pricing-name">Experiencia Isla Completa</h3>
+          <div class="pricing-duration">8 horas</div>
+          <div class="pricing-options">
+            <div class="price-option featured">
+              <span class="price-label">Por persona</span>
+              <div class="price-amount"><sup>$</sup>100</div>
+            </div>
+            <div class="price-divider">ó</div>
+            <div class="price-option">
+              <span class="price-label">Grupo privado <small>(hasta 6)</small></span>
+              <div class="price-amount group"><sup>$</sup>600</div>
+            </div>
+          </div>
+          <ul class="pricing-includes">
+            <li>✅ Todo lo del plan de 6h</li>
+            <li>✅ 3 playas incluidas</li>
+            <li>✅ Parada en punto panorámico</li>
+            <li>✅ Más tiempo en el agua</li>
+          </ul>
+          <a href="#reservar" class="btn-price btn-price--best" id="reserve-8h">Reservar 8h</a>
+        </div>
+      </div>
+
+      <p class="pricing-note">💡 ¿Tienes un grupo grande? ¡Contáctanos por Instagram para precios especiales!</p>
+    </div>
+  </section>
+
+  <!-- ── INSTAGRAM GALLERY ── -->
+  <section id="galeria" class="section">
+    <div class="container">
+      <div class="section-tag">Síguenos en Instagram</div>
+      <h2 class="section-title">Lo Último de Ghetty</h2>
+      <p class="section-sub">Mira la experiencia en acción — publicaciones reales, momentos reales.</p>
+
+      <!-- Carousel wrapper -->
+      <div class="ig-carousel-wrapper">
+        <button class="carousel-btn carousel-btn--prev" id="prevBtn" aria-label="Anterior">&#8592;</button>
+        <div class="ig-carousel" id="igCarousel" role="region" aria-label="Galería de Instagram">
+          <!-- Posts se cargan desde posts.json -->
+          <div class="ig-loading" id="igLoading">
+            <div class="spinner"></div>
+            <p>Cargando galería…</p>
+          </div>
+        </div>
+        <button class="carousel-btn carousel-btn--next" id="nextBtn" aria-label="Siguiente">&#8594;</button>
+      </div>
+
+      <!-- Dots -->
+      <div class="carousel-dots" id="carouselDots" aria-label="Posición del carrusel"></div>
+
+      <div class="ig-cta">
+        <a href="https://www.instagram.com/ghettymotorhome/" target="_blank" rel="noopener noreferrer" class="btn-instagram" id="ig-follow-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          Seguir @ghettymotorhome
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOOK / CTA ── -->
+  <section id="reservar" class="section section-cta">
+    <div class="container">
+      <div class="cta-card">
+        <div class="cta-bg-img">
+          <img src="assets/beach_hero.png" alt="" aria-hidden="true" loading="lazy"/>
+          <div class="cta-overlay"></div>
+        </div>
+        <div class="cta-content">
+          <div class="section-tag light">¿Listo para la aventura?</div>
+          <h2 class="cta-title">Reserva tu Experiencia</h2>
+          <p class="cta-sub">Escríbenos por Instagram y coordinamos la fecha perfecta para ti.<br/>Cupos limitados — ¡no te quedes sin el tuyo!</p>
+          <a href="https://www.instagram.com/ghettymotorhome/" target="_blank" rel="noopener noreferrer" class="btn-reserve-big" id="main-reserve-btn">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            Escríbenos en Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="Ghetty logo" width="48" height="48" loading="lazy"/>
+          <div>
+            <div class="footer-name">Ghetty Motor-Home</div>
+            <div class="footer-tagline">Beach Experience · Puerto Rico 🌴</div>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="#experiencia">Experiencia</a>
+          <a href="#precios">Precios</a>
+          <a href="#galeria">Galería</a>
+          <a href="https://www.instagram.com/ghettymotorhome/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Ghetty Motor-Home Beach Experience. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
