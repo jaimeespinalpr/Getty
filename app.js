@@ -78,7 +78,7 @@ const TRANSLATIONS = {
     'cta.btn':   'Escríbenos en Instagram',
 
     'footer.tagline': 'Beach Experience · Puerto Rico 🌴',
-    'footer.copy':    '© 2025 Ghetty Motor-Home Beach Experience. Todos los derechos reservados.',
+    'footer.copy':    '© 2026 Ghetty Motor-Home Beach Experience. Todos los derechos reservados.',
 
     'ph1.title': 'El camper listo para ti',
     'ph1.text':  'Preparados para la próxima aventura en las playas de Puerto Rico.',
@@ -161,7 +161,7 @@ const TRANSLATIONS = {
     'cta.btn':   'Message us on Instagram',
 
     'footer.tagline': 'Beach Experience · Puerto Rico 🌴',
-    'footer.copy':    '© 2025 Ghetty Motor-Home Beach Experience. All rights reserved.',
+    'footer.copy':    '© 2026 Ghetty Motor-Home Beach Experience. All rights reserved.',
 
     'ph1.title': 'Camper ready for you',
     'ph1.text':  'All set for the next adventure on the beaches of Puerto Rico.',
@@ -267,11 +267,18 @@ document.querySelectorAll('.feature-card, .pricing-card').forEach((el, i) => {
 /* ─────────────────────────────────────────────
    INSTAGRAM CAROUSEL
 ───────────────────────────────────────────── */
-const carousel  = document.getElementById('igCarousel');
-const dotsWrap  = document.getElementById('carouselDots');
-const prevBtn   = document.getElementById('prevBtn');
-const nextBtn   = document.getElementById('nextBtn');
-const igLoading = document.getElementById('igLoading');
+const carousel        = document.getElementById('igCarousel');
+const dotsWrap        = document.getElementById('carouselDots');
+const prevBtn         = document.getElementById('prevBtn');
+const nextBtn         = document.getElementById('nextBtn');
+const igLoading       = document.getElementById('igLoading');
+const progressFill    = document.getElementById('carouselProgressFill');
+
+const AUTOPLAY_DURATION = 4000; // ms per slide
+let autoPlayTimer     = null;
+let progressTimer     = null;
+let autoPlayPaused    = false;
+let currentIndex      = 0;
 
 // Snap highlight fallback via IntersectionObserver
 function setupSnapObserver() {
@@ -356,6 +363,7 @@ function renderPlaceholders() {
     carousel.appendChild(card);
   });
   buildDots(PLACEHOLDER_KEYS.length);
+  startAutoPlay();
 }
 
 function updatePlaceholderCards(lang) {
@@ -366,7 +374,6 @@ function updatePlaceholderCards(lang) {
     if (titleKey) card.querySelector('.ig-placeholder-title').textContent = t[titleKey] || '';
     if (textKey)  card.querySelector('.ig-placeholder-text').textContent  = t[textKey]  || '';
   });
-  // Also update "loading" text if still showing
   const loadingP = document.querySelector('#igLoading p[data-i18n]');
   if (loadingP) loadingP.textContent = t['ig.loading'] || '';
 }
@@ -378,40 +385,110 @@ function buildDots(count) {
     const dot = document.createElement('button');
     dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
     dot.setAttribute('aria-label', `${currentLang === 'es' ? 'Ir a publicación' : 'Go to post'} ${i + 1}`);
-    dot.addEventListener('click', () => scrollToCard(i));
+    dot.addEventListener('click', () => { goToCard(i); resetAutoPlay(); });
     dotsWrap.appendChild(dot);
   }
 }
 
+function getCards() {
+  return [...carousel.querySelectorAll('.ig-card, .ig-placeholder')];
+}
+
 function scrollToCard(index) {
-  const cards = carousel.querySelectorAll('.ig-card, .ig-placeholder');
-  cards[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  const cards = getCards();
+  if (!cards[index]) return;
+  cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function goToCard(index) {
+  const cards = getCards();
+  currentIndex = ((index % cards.length) + cards.length) % cards.length;
+  scrollToCard(currentIndex);
+  updateActiveDot();
 }
 
 function updateActiveDot() {
-  const cards = carousel.querySelectorAll('.ig-card, .ig-placeholder');
-  const dots  = dotsWrap.querySelectorAll('.carousel-dot');
-  let closest = 0, minDist = Infinity;
-  const centerX = window.innerWidth / 2;
-  cards.forEach((card, i) => {
-    const dist = Math.abs(card.getBoundingClientRect().left + card.getBoundingClientRect().width / 2 - centerX);
-    if (dist < minDist) { minDist = dist; closest = i; }
-  });
-  dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+  const dots = dotsWrap.querySelectorAll('.carousel-dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
 }
 
-carousel.addEventListener('scroll', updateActiveDot, { passive: true });
+carousel.addEventListener('scroll', () => {
+  const cards  = getCards();
+  const dots   = dotsWrap.querySelectorAll('.carousel-dot');
+  let closest  = 0, minDist = Infinity;
+  const center = carousel.getBoundingClientRect().left + carousel.getBoundingClientRect().width / 2;
+  cards.forEach((card, i) => {
+    const rect = card.getBoundingClientRect();
+    const dist = Math.abs(rect.left + rect.width / 2 - center);
+    if (dist < minDist) { minDist = dist; closest = i; }
+  });
+  if (closest !== currentIndex) {
+    currentIndex = closest;
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+  }
+}, { passive: true });
+
+/* ── Auto-play ── */
+function startProgressBar() {
+  if (!progressFill) return;
+  progressFill.style.transition = 'none';
+  progressFill.style.width = '0%';
+  // Force reflow so transition restarts cleanly
+  void progressFill.offsetWidth;
+  progressFill.style.transition = `width ${AUTOPLAY_DURATION}ms linear`;
+  progressFill.style.width = '100%';
+}
+
+function resetProgressBar() {
+  if (!progressFill) return;
+  progressFill.style.transition = 'none';
+  progressFill.style.width = '0%';
+}
+
+function startAutoPlay() {
+  clearInterval(autoPlayTimer);
+  startProgressBar();
+  autoPlayTimer = setInterval(() => {
+    if (autoPlayPaused) return;
+    const cards = getCards();
+    goToCard((currentIndex + 1) % cards.length);
+    startProgressBar();
+  }, AUTOPLAY_DURATION);
+}
+
+function resetAutoPlay() {
+  clearInterval(autoPlayTimer);
+  startAutoPlay();
+}
+
+// Pause on hover / touch
+const carouselWrapper = document.querySelector('.ig-carousel-wrapper');
+carouselWrapper?.addEventListener('mouseenter', () => {
+  autoPlayPaused = true;
+  resetProgressBar();
+});
+carouselWrapper?.addEventListener('mouseleave', () => {
+  autoPlayPaused = false;
+  resetAutoPlay();
+});
+carousel.addEventListener('touchstart', () => {
+  autoPlayPaused = true;
+  resetProgressBar();
+}, { passive: true });
+carousel.addEventListener('touchend', () => {
+  setTimeout(() => {
+    autoPlayPaused = false;
+    resetAutoPlay();
+  }, 1500);
+}, { passive: true });
 
 prevBtn.addEventListener('click', () => {
-  const dots  = dotsWrap.querySelectorAll('.carousel-dot');
-  const active = [...dots].findIndex(d => d.classList.contains('active'));
-  scrollToCard(Math.max(0, active - 1));
+  goToCard(currentIndex - 1);
+  resetAutoPlay();
 });
 nextBtn.addEventListener('click', () => {
-  const cards = carousel.querySelectorAll('.ig-card, .ig-placeholder');
-  const dots  = dotsWrap.querySelectorAll('.carousel-dot');
-  const active = [...dots].findIndex(d => d.classList.contains('active'));
-  scrollToCard(Math.min(cards.length - 1, active + 1));
+  goToCard(currentIndex + 1);
+  resetAutoPlay();
 });
 
 async function loadInstagramPosts() {
@@ -425,6 +502,7 @@ async function loadInstagramPosts() {
     posts.forEach(p => carousel.appendChild(buildCard(p)));
     buildDots(posts.length);
     setupSnapObserver();
+    startAutoPlay();
   } catch {
     renderPlaceholders();
   }

@@ -1,5 +1,46 @@
 {
-  "updated_at": "2025-06-11T00:00:00Z",
-  "source": "placeholder",
-  "posts": []
+  "updated_at": "2026-06-11T12:00:00Z",
+  "source": "mock",
+  "posts": [
+    {
+      "id": "1",
+      "media_type": "IMAGE",
+      "media_url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop&q=85",
+      "permalink": "https://www.instagram.com/ghettymotorhome/",
+      "caption": "🚐🌴 ¡El camper listo para una nueva aventura! Hoy madrugamos para llegar a la playa antes que nadie — y valió la pena cada segundo. ¿Quién se apunta al próximo viaje? #GhettyMotorHome #PuertoRico #BeachLife #CamperLife #IslaDelEncanto",
+      "timestamp": "2026-06-11T08:30:00Z"
+    },
+    {
+      "id": "2",
+      "media_type": "IMAGE",
+      "media_url": "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&h=600&fit=crop&q=85",
+      "permalink": "https://www.instagram.com/ghettymotorhome/",
+      "caption": "🏝️ Esa vista que no tiene precio — cortesía de Ghetty y las playas del sur. Grupo de 6, risas infinitas y agua turquesa. Esto es Puerto Rico auténtico. 💙 #GhettyExperience #VisitPuertoRico #BeachVibes #GroupTrip",
+      "timestamp": "2026-06-09T15:45:00Z"
+    },
+    {
+      "id": "3",
+      "media_type": "IMAGE",
+      "media_url": "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&h=600&fit=crop&q=85",
+      "permalink": "https://www.instagram.com/ghettymotorhome/",
+      "caption": "🌊 El Caribe en su máxima expresión. Cada vez que llevo un grupo a este spot siento que es la primera vez. Agua cristalina, arena fina y la brisa que te resetea el alma. 🙌 #Caribbean #PuertoRicoBeach #Turquoise #Wanderlust",
+      "timestamp": "2026-06-07T10:00:00Z"
+    },
+    {
+      "id": "4",
+      "media_type": "IMAGE",
+      "media_url": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&h=600&fit=crop&q=85",
+      "permalink": "https://www.instagram.com/ghettymotorhome/",
+      "caption": "🚐✨ El camino es parte de la experiencia. Ventanas abajo, música local a tope y la isla pasando. Desde que subes al camper ya empieza la magia. Reserva tu aventura — link en bio. #RoadTrip #CamperVan #PuertoRicoTravel #GhettyMotorHome",
+      "timestamp": "2026-06-05T09:20:00Z"
+    },
+    {
+      "id": "5",
+      "media_type": "IMAGE",
+      "media_url": "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=600&h=600&fit=crop&q=85",
+      "permalink": "https://www.instagram.com/ghettymotorhome/",
+      "caption": "🌅 Atardecer desde el camper — una vista que no se olvida. Cerramos el día perfecto con familia, risas y el cielo pintado de naranja sobre el mar. Gracias a todos los que confían en Ghetty. ❤️ #Sunset #FamilyTrip #PuertoRico #GhettyExperience #IslaDelEncanto",
+      "timestamp": "2026-06-03T18:10:00Z"
+    }
+  ]
 }
