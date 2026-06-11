@@ -179,7 +179,7 @@ const TRANSLATIONS = {
 /* ─────────────────────────────────────────────
    i18n ENGINE
 ───────────────────────────────────────────── */
-let currentLang = localStorage.getItem('ghettylang') || 'es';
+let currentLang = localStorage.getItem('ghettylang') || 'en';
 
 function applyTranslations(lang) {
   const t = TRANSLATIONS[lang];
