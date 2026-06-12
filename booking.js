@@ -393,7 +393,7 @@
           : [rows.date, selStart],
         pkgSelect.value === 'night' ? [rows.checkout, selEnd] : null,
         [rows.guests, guestsEl.value],
-        [rows.total, `$${(data.total || (calc ? calc.amount : 0)).toFixed(2)} USD`],
+        [rows.total, `$${(data.total || (calc ? calc.total : 0)).toFixed(2)} USD`],
       ].filter(Boolean);
 
       bkReceiptRows.innerHTML = rowData.map(([k, v]) =>
@@ -401,7 +401,7 @@
       ).join('');
 
       bkReceiptId.textContent = data.paymentId || '';
-      document.getElementById('bkReceiptIdLabel').textContent = t.paidRows.pkg ? 'N.º de confirmación' : 'Confirmation #';
+      document.getElementById('bkReceiptIdLabel').textContent = lang() === 'es' ? 'N.º de confirmación' : 'Confirmation #';
       modal.querySelector('.bk-receipt-title').textContent = t.paidTitle;
 
       bkModalClose2.textContent = t.paidClose;
@@ -414,6 +414,7 @@
 
       bkReceipt.hidden = false;
       bkModalInfo.hidden = true;
+      modal.setAttribute('aria-labelledby', 'bkModalTitle');
       modal.classList.add('open');
       form.reset();
       selStart = null; selEnd = null;
@@ -456,6 +457,7 @@
     summaryEl.textContent = buildSummary();
     bkReceipt.hidden = true;
     bkModalInfo.hidden = false;
+    modal.setAttribute('aria-labelledby', 'bkModalTitle2');
     if (link) {
       window.open(link, '_blank', 'noopener');
       modalText.textContent = T().paySquare;
