@@ -13,7 +13,7 @@ window.GHETTY_CONFIG = {
      Cuando los 3 campos están llenos, el formulario
      muestra el campo de tarjeta automáticamente.    */
   square: {
-    applicationId: '',   // sq0idp-... (Square Developer → Credentials)
+    applicationId: 'sandbox-sq0idb-QJw7tPPQEpjVBi65iAWNFw',   // sq0idp-... (Square Developer → Credentials)
     locationId: '',      // L... (Square Developer → Locations)
     paymentApiUrl: '',   // URL del worker, ej: https://ghetty-pay.TU-CUENTA.workers.dev
     environment: 'sandbox', // 'sandbox' para pruebas, 'production' para cobrar de verdad
