@@ -16,12 +16,44 @@ Sitio web para rentar el Ghetty Motor-Home y reservar experiencias de playa en P
 
 ### 1. Conectar Square (cobros en la web)
 
+#### Opción A — Pago integrado en la web (recomendado) 💳
+
+El cliente escribe su tarjeta **dentro de la página** y Square solo procesa el cobro. Además, cuando el pago se aprueba, la reserva se registra sola en `bookings.json` y las fechas se bloquean automáticamente (web + Airbnb).
+
+Requiere un mini-servidor gratuito (Cloudflare Worker, carpeta `worker/`). Pasos:
+
+1. **Square** — en [developer.squareup.com](https://developer.squareup.com) crea una aplicación y copia de **Credentials**:
+   - `Application ID` (empieza con `sq0idp-` en producción / `sandbox-sq0idb-` en pruebas)
+   - `Access Token` (⚠️ secreto, no lo pongas en la web)
+   - `Location ID` (pestaña **Locations**)
+   - Empieza en **Sandbox** para probar con tarjetas falsas (`4111 1111 1111 1111`), y cambia a **Production** cuando todo funcione.
+2. **Cloudflare** — crea una cuenta gratis en [cloudflare.com](https://cloudflare.com) y genera un API Token con la plantilla **"Edit Cloudflare Workers"**. En GitHub agrega 2 secretos (**Settings → Secrets → Actions**):
+   - `CLOUDFLARE_API_TOKEN`
+   - `CLOUDFLARE_ACCOUNT_ID` (está en el dashboard de Cloudflare, barra lateral)
+3. **Desplegar** — corre el workflow **🚀 Deploy Payment Worker** (pestaña Actions → Run workflow). Te dará la URL del worker: `https://ghetty-pay.TU-CUENTA.workers.dev`.
+4. **Configurar el worker** — en Cloudflare → Workers → ghetty-pay → **Settings → Variables**:
+   - `SQUARE_ACCESS_TOKEN` (tipo *Secret*) = tu Access Token
+   - `SQUARE_LOCATION_ID` = tu Location ID
+   - `SQUARE_ENV` = `sandbox` o `production`
+   - `ALLOWED_ORIGIN` = `https://jaimeespinalpr.github.io`
+   - *(Opcional, para el registro automático de reservas)* `GITHUB_TOKEN` (tipo *Secret*) = un [fine-grained PAT](https://github.com/settings/personal-access-tokens) con permiso **Contents: Read and write** solo sobre este repo.
+5. **Conectar la web** — en `config.js` llena:
+
+```js
+square: {
+  applicationId: 'sq0idp-XXXX',
+  locationId: 'LXXXX',
+  paymentApiUrl: 'https://ghetty-pay.TU-CUENTA.workers.dev',
+  environment: 'production', // o 'sandbox' mientras pruebas
+},
+```
+
+> ⚠️ Si cambias los precios en `config.js`, cámbialos también en `worker/worker.js` (constante `PRICING`) — el worker recalcula el total en el servidor por seguridad.
+
+#### Opción B — Enlaces de pago de Square (sin worker)
+
 1. Entra a tu [Square Dashboard](https://squareup.com/dashboard) → **Pagos en línea → Enlaces de pago** (Payment Links).
-2. Crea un enlace de pago para cada paquete:
-   - Renta por noche (puedes crearlo como artículo con cantidad variable, o un enlace por noche)
-   - Experiencia Tropical (6h)
-   - Experiencia Isla Completa (8h)
-3. Copia cada URL (`https://square.link/u/...`) y pégala en **`config.js`**:
+2. Crea un enlace por paquete y pega las URLs en `config.js`:
 
 ```js
 squarePaymentLinks: {
@@ -31,7 +63,7 @@ squarePaymentLinks: {
 },
 ```
 
-> Mientras los enlaces estén vacíos, el botón de reserva muestra el resumen de la solicitud para coordinarla por Instagram.
+> Mientras no haya nada configurado, el botón de reserva muestra el resumen de la solicitud para coordinarla por Instagram.
 
 En `config.js` también puedes cambiar el **precio por noche**, los precios de las experiencias y la URL de tu anuncio de Airbnb.
 

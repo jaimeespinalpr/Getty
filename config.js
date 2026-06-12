@@ -6,12 +6,24 @@
 
 window.GHETTY_CONFIG = {
 
-  /* ── SQUARE ─────────────────────────────────
-     Crea un "Payment Link" en tu Square Dashboard
-     (Pagos en línea → Enlaces de pago) para cada
-     paquete y pega aquí la URL (https://square.link/u/...).
-     Si lo dejas vacío, el botón de reserva mostrará
-     el resumen para coordinar por Instagram.        */
+  /* ── SQUARE: PAGO INTEGRADO (recomendado) ─────
+     El cliente paga con tarjeta DENTRO de la web.
+     Requiere el Worker de pagos desplegado (carpeta
+     /worker — instrucciones en README.md).
+     Cuando los 3 campos están llenos, el formulario
+     muestra el campo de tarjeta automáticamente.    */
+  square: {
+    applicationId: '',   // sq0idp-... (Square Developer → Credentials)
+    locationId: '',      // L... (Square Developer → Locations)
+    paymentApiUrl: '',   // URL del worker, ej: https://ghetty-pay.TU-CUENTA.workers.dev
+    environment: 'sandbox', // 'sandbox' para pruebas, 'production' para cobrar de verdad
+  },
+
+  /* ── SQUARE: ENLACES DE PAGO (alternativa) ────
+     Si no quieres usar el pago integrado, crea
+     "Payment Links" en tu Square Dashboard y pega
+     las URLs aquí. Si todo queda vacío, el botón
+     muestra el resumen para coordinar por Instagram. */
   squarePaymentLinks: {
     night: '',   // Renta por noche
     exp6h: '',   // Experiencia Tropical (6h)
