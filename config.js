@@ -4,7 +4,7 @@
 //  Instrucciones completas en README.md
 // ══════════════════════════════════════════════
 
-const GHETTY_CONFIG = {
+window.GHETTY_CONFIG = {
 
   /* ── SQUARE ─────────────────────────────────
      Crea un "Payment Link" en tu Square Dashboard

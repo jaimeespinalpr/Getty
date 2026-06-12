@@ -80,7 +80,7 @@ def web_booking_dates(bookings: list) -> set:
         try:
             start = date.fromisoformat(b["start"])
             end = date.fromisoformat(b.get("end", b["start"]))
-        except (KeyError, ValueError) as exc:
+        except (KeyError, ValueError, TypeError, AttributeError) as exc:
             print(f"⚠️  Reserva inválida ignorada: {b} ({exc})")
             continue
         if end <= start:
@@ -119,7 +119,7 @@ def write_export_ics(bookings: list):
         try:
             start = date.fromisoformat(b["start"])
             end = date.fromisoformat(b.get("end", b["start"]))
-        except (KeyError, ValueError):
+        except (KeyError, ValueError, TypeError, AttributeError):
             continue
         if end <= start:
             end = start + timedelta(days=1)

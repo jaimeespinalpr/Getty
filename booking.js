@@ -109,7 +109,9 @@
       bookedSet = new Set(data.booked || []);
       if (calSyncTime && data.updated_at) {
         const upd = new Date(data.updated_at);
-        calSyncTime.textContent = `(${upd.toLocaleDateString(locale(), { day: 'numeric', month: 'short' })})`;
+        if (!isNaN(upd.getTime())) {
+          calSyncTime.textContent = `(${upd.toLocaleDateString(locale(), { day: 'numeric', month: 'short' })})`;
+        }
       }
     } catch {
       bookedSet = new Set();
@@ -147,6 +149,7 @@
       cell.type = 'button';
       cell.className = 'cal-day';
       cell.textContent = day;
+      cell.setAttribute('aria-label', d.toLocaleDateString(locale(), { day: 'numeric', month: 'long', year: 'numeric' }));
 
       const isPast = d < today;
       const isBooked = bookedSet.has(dIso);
