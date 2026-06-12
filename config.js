@@ -15,7 +15,7 @@ window.GHETTY_CONFIG = {
   square: {
     applicationId: 'sandbox-sq0idb-QJw7tPPQEpjVBi65iAWNFw',   // sq0idp-... (Square Developer → Credentials)
     locationId: 'LSSNRPYZ6G7MW',      // L... (Square Developer → Locations)
-    paymentApiUrl: '',   // URL del worker, ej: https://ghetty-pay.TU-CUENTA.workers.dev
+    paymentApiUrl: 'https://ghetty-pay.jaimeespinalpr.workers.dev',   // URL del worker
     environment: 'sandbox', // 'sandbox' para pruebas, 'production' para cobrar de verdad
   },
 
