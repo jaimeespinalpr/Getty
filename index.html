@@ -339,6 +339,14 @@
             <input type="text" id="bkContact" autocomplete="email" required/>
           </div>
 
+          <!-- Campo de tarjeta (Square Web Payments SDK) — visible solo
+               cuando config.js tiene el pago integrado configurado -->
+          <div class="form-group" id="cardGroup" hidden>
+            <label data-i18n="book.card">Tarjeta de crédito o débito</label>
+            <div id="card-container"></div>
+            <p class="card-error" id="cardError" hidden></p>
+          </div>
+
           <div class="booking-total">
             <span data-i18n="book.total">Total estimado</span>
             <span class="booking-total-amount" id="bkTotal">—</span>

@@ -1241,3 +1241,17 @@ body.lang-transition * {
   .form-row { grid-template-columns: 1fr; }
   .booking-card { padding: 20px; }
 }
+
+/* ── PAGO INTEGRADO (Square card) ── */
+#card-container {
+  min-height: 48px;
+  border-radius: 10px;
+}
+.card-error {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--pr-red);
+}
+.btn-book:disabled { opacity: 0.6; cursor: wait; }
+.bk-modal-card p a { color: var(--sea); font-weight: 700; }

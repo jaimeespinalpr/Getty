@@ -62,6 +62,13 @@
       paySquare: 'Completa el pago en la ventana de Square para confirmar tu reserva. Te contactaremos para los detalles finales.',
       noSquare: 'Recibimos tu solicitud. Cópiala y envíanosla por Instagram para confirmar tu reserva — el pago se coordina con Square.',
       copied: '✅ ¡Copiado!',
+      processing: 'Procesando pago…',
+      paidTitle: '¡Pago recibido! 🎉',
+      paidText: 'Tu reserva está confirmada. Te contactaremos pronto con los detalles. ',
+      paidReceipt: 'Ver recibo',
+      payErrCard: 'No se pudo procesar la tarjeta. Revisa los datos e intenta de nuevo.',
+      payErrDates: 'Esas fechas se acaban de ocupar. Escoge otras fechas.',
+      payErrNetwork: 'No se pudo conectar con el sistema de pagos. Intenta de nuevo en un momento.',
       summary: d => `🚐 RESERVA GHETTY MOTOR-HOME\n📦 ${d.pkg}\n📅 Llegada: ${d.in}${d.out ? `\n📅 Salida: ${d.out}` : ''}\n👥 Personas: ${d.guests}\n💰 Total: $${d.total}\n🙋 ${d.name}\n📞 ${d.contact}`,
       pkgNames: { night: 'Renta por noche', exp6h: 'Experiencia Tropical (6h)', exp8h: 'Experiencia Isla Completa (8h)' },
     },
@@ -77,6 +84,13 @@
       paySquare: 'Complete the payment in the Square window to confirm your booking. We\'ll reach out with the final details.',
       noSquare: 'We got your request! Copy it and send it to us on Instagram to confirm — payment is handled through Square.',
       copied: '✅ Copied!',
+      processing: 'Processing payment…',
+      paidTitle: 'Payment received! 🎉',
+      paidText: 'Your booking is confirmed. We\'ll contact you soon with the details. ',
+      paidReceipt: 'View receipt',
+      payErrCard: 'The card could not be processed. Check the details and try again.',
+      payErrDates: 'Those dates were just booked. Please pick different dates.',
+      payErrNetwork: 'Could not reach the payment system. Please try again in a moment.',
       summary: d => `🚐 GHETTY MOTOR-HOME BOOKING\n📦 ${d.pkg}\n📅 Check-in: ${d.in}${d.out ? `\n📅 Check-out: ${d.out}` : ''}\n👥 Guests: ${d.guests}\n💰 Total: $${d.total}\n🙋 ${d.name}\n📞 ${d.contact}`,
       pkgNames: { night: 'Nightly rental', exp6h: 'Tropical Experience (6h)', exp8h: 'Full Island Experience (8h)' },
     },
@@ -276,6 +290,108 @@
     });
   }
 
+  /* ── Pago integrado (Square Web Payments SDK + Worker) ── */
+  const sq = cfg.square || {};
+  const embeddedEnabled = !!(sq.applicationId && sq.locationId && sq.paymentApiUrl);
+  const cardGroup = document.getElementById('cardGroup');
+  const cardError = document.getElementById('cardError');
+  const submitBtn = document.getElementById('bkSubmit');
+  let card = null;
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error('No se pudo cargar ' + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  async function initSquareCard() {
+    const src = sq.environment === 'production'
+      ? 'https://web.squarecdn.com/v1/square.js'
+      : 'https://sandbox.web.squarecdn.com/v1/square.js';
+    await loadScript(src);
+    const payments = window.Square.payments(sq.applicationId, sq.locationId);
+    card = await payments.card();
+    await card.attach('#card-container');
+    cardGroup.hidden = false;
+  }
+
+  if (embeddedEnabled) {
+    // Si el SDK no carga, el formulario sigue funcionando con el
+    // flujo de enlaces de pago / resumen por Instagram.
+    initSquareCard().catch(err => console.warn('Square SDK no disponible:', err));
+  }
+
+  function showCardError(msg) {
+    cardError.textContent = msg;
+    cardError.hidden = false;
+  }
+
+  async function payEmbedded(calc) {
+    cardError.hidden = true;
+    submitBtn.disabled = true;
+    hintEl.textContent = T().processing;
+    hintEl.classList.remove('booking-hint--error');
+    try {
+      const tok = await card.tokenize();
+      if (tok.status !== 'OK') {
+        showCardError(tok.errors?.[0]?.message || T().payErrCard);
+        return;
+      }
+      const res = await fetch(sq.paymentApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sourceId: tok.token,
+          package: pkgSelect.value,
+          start: selStart,
+          end: pkgSelect.value === 'night' ? selEnd : selStart,
+          guests: parseInt(guestsEl.value, 10),
+          name: nameEl.value.trim(),
+          contact: contactEl.value.trim(),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        if (data.error === 'dates_unavailable') {
+          showCardError(T().payErrDates);
+          loadAvailability(); // refrescar el calendario con lo recién ocupado
+        } else {
+          showCardError(T().payErrCard + (data.detail ? ` (${data.detail})` : ''));
+        }
+        return;
+      }
+      // ✅ Pago aprobado
+      summaryEl.textContent = buildSummary() + `\n💳 ${data.paymentId}`;
+      modal.querySelector('h3').textContent = T().paidTitle;
+      modalText.textContent = T().paidText;
+      if (data.receiptUrl) {
+        modalText.innerHTML = '';
+        modalText.append(T().paidText);
+        const a = document.createElement('a');
+        a.href = data.receiptUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = T().paidReceipt;
+        modalText.appendChild(a);
+      }
+      modal.classList.add('open');
+      form.reset();
+      selStart = null; selEnd = null;
+      loadAvailability(); // las fechas pagadas quedan bloqueadas
+      updateSummary();
+    } catch (err) {
+      console.error(err);
+      showCardError(T().payErrNetwork);
+    } finally {
+      submitBtn.disabled = false;
+      if (hintEl.textContent === T().processing) updateSummary();
+    }
+  }
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const calc = computeTotal();
@@ -292,6 +408,13 @@
       return;
     }
 
+    // Pago integrado: cobrar la tarjeta sin salir de la página
+    if (embeddedEnabled && card) {
+      payEmbedded(calc);
+      return;
+    }
+
+    // Alternativa: enlace de pago de Square o resumen por Instagram
     const link = (cfg.squarePaymentLinks || {})[pkgSelect.value];
     summaryEl.textContent = buildSummary();
     if (link) {

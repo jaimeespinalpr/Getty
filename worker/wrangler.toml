@@ -1,0 +1,13 @@
+name = "ghetty-pay"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# Las variables reales se configuran en el dashboard de Cloudflare
+# (Worker → Settings → Variables). keep_vars evita que un deploy
+# las borre.
+keep_vars = true
+
+[vars]
+SQUARE_ENV = "sandbox"
+ALLOWED_ORIGIN = "*"
+GITHUB_REPO = "jaimeespinalpr/Getty"
