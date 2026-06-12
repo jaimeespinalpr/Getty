@@ -1133,7 +1133,7 @@ body.lang-transition * {
 }
 .booking-alt a:hover { text-decoration: underline; }
 
-/* Modal de confirmación */
+/* ── MODAL DE CONFIRMACIÓN ── */
 .bk-modal {
   position: fixed;
   inset: 0;
@@ -1141,33 +1141,157 @@ body.lang-transition * {
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  background: rgba(10,35,66,0.7);
-  backdrop-filter: blur(6px);
+  padding: 20px;
+  background: rgba(5,20,50,0.75);
+  backdrop-filter: blur(8px);
 }
 .bk-modal.open { display: flex; }
 .bk-modal-card {
   position: relative;
-  background: var(--white);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  padding: 36px 32px;
-  max-width: 460px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.22);
   width: 100%;
-  text-align: center;
+  max-width: 460px;
+  overflow: hidden;
 }
-.bk-modal-emoji { font-size: 3rem; margin-bottom: 8px; }
-.bk-modal-card h3 { font-size: 1.4rem; margin-bottom: 10px; }
-.bk-modal-card p { color: var(--gray-700); font-size: 0.95rem; }
 .bk-modal-close {
   position: absolute;
-  top: 12px; right: 18px;
+  top: 16px; right: 16px;
+  z-index: 10;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 50%;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.bk-modal-close:hover { background: #e5e7eb; color: #111; }
+
+/* ─ RECEIPT (vista de pago exitoso) ─ */
+.bk-receipt { padding: 0 0 32px; }
+.bk-receipt-header {
+  background: linear-gradient(135deg, #0a2342 0%, #1a5276 100%);
+  padding: 36px 32px 28px;
+  text-align: center;
+  color: #fff;
+}
+.bk-receipt-logo {
+  display: block;
+  margin: 0 auto 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.12);
+  padding: 6px;
+}
+.bk-receipt-check-wrap { margin-bottom: 14px; }
+.bk-receipt-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px; height: 60px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+  color: #fff;
+}
+.bk-receipt-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+.bk-receipt-brand {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+.bk-receipt-divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 0 24px;
+}
+.bk-receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 4px 24px 0;
+  display: block;
+}
+.bk-receipt-table tbody { display: table; width: 100%; padding: 0 24px; }
+.bk-receipt-table tr { border-bottom: 1px solid #f3f4f6; }
+.bk-receipt-table tr:last-child { border-bottom: none; }
+.bk-rt-label {
+  padding: 13px 0 13px 24px;
+  font-size: 0.82rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  width: 42%;
+}
+.bk-rt-value {
+  padding: 13px 24px 13px 0;
+  font-size: 0.95rem;
+  color: #111827;
+  font-weight: 600;
+  text-align: right;
+}
+.bk-receipt-id-label {
+  margin: 8px 24px 2px;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.bk-receipt-id {
+  margin: 0 24px 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #374151;
+  word-break: break-all;
+}
+.bk-receipt-email-note {
+  margin: 0 24px 16px;
+  font-size: 0.85rem;
+  color: #059669;
+  font-weight: 500;
+}
+.bk-receipt-actions {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bk-receipt-sq-btn {
+  display: block;
+  text-align: center;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.bk-receipt-close-link {
   background: none;
   border: none;
-  font-size: 1.8rem;
-  color: var(--gray-400);
+  color: #6b7280;
+  font-size: 0.9rem;
   cursor: pointer;
+  padding: 6px;
+  text-align: center;
+  text-decoration: underline;
 }
+.bk-receipt-close-link:hover { color: #111; }
+
+/* ─ INFO (fallback sin pago) ─ */
+.bk-modal-info { padding: 40px 32px 32px; text-align: center; }
+.bk-modal-emoji-wrap { margin-bottom: 14px; }
+.bk-modal-emoji-wrap img { border-radius: 12px; }
+.bk-modal-info h3 { font-size: 1.3rem; margin-bottom: 10px; color: #111; }
+.bk-modal-info p { color: #4b5563; font-size: 0.95rem; }
 .bk-summary {
   margin: 18px 0 14px;
   padding: 14px 16px;
