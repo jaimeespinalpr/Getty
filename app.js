@@ -403,7 +403,14 @@ const AUTOPLAY_DURATION = 4000; // ms per slide
 let autoPlayTimer     = null;
 let progressTimer     = null;
 let autoPlayPaused    = false;
+let carouselVisible   = false;  // solo auto-avanzar si la galería está en pantalla
 let currentIndex      = 0;
+
+// Pausar el auto-play cuando la galería no está visible
+const visibilityObserver = new IntersectionObserver(([entry]) => {
+  carouselVisible = entry.isIntersecting;
+}, { threshold: 0.25 });
+visibilityObserver.observe(carousel);
 
 // Snap highlight fallback via IntersectionObserver
 function setupSnapObserver() {
@@ -521,8 +528,13 @@ function getCards() {
 
 function scrollToCard(index) {
   const cards = getCards();
-  if (!cards[index]) return;
-  cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  const card = cards[index];
+  if (!card) return;
+  // Desplazar SOLO el carrusel horizontalmente — nunca la página.
+  // (scrollIntoView movía el scroll vertical de la página hacia la
+  //  galería mientras el usuario leía otra sección.)
+  const left = card.offsetLeft - (carousel.clientWidth - card.offsetWidth) / 2;
+  carousel.scrollTo({ left, behavior: 'smooth' });
 }
 
 function goToCard(index) {
@@ -574,7 +586,7 @@ function startAutoPlay() {
   clearInterval(autoPlayTimer);
   startProgressBar();
   autoPlayTimer = setInterval(() => {
-    if (autoPlayPaused) return;
+    if (autoPlayPaused || !carouselVisible) return;
     const cards = getCards();
     goToCard((currentIndex + 1) % cards.length);
     startProgressBar();
