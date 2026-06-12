@@ -68,16 +68,20 @@ En `config.js` también puedes cambiar el **precio por noche**, los precios de l
 
 ### 3. Subir las fotos del interior
 
-Coloca las fotos en la carpeta `assets/` con estos nombres exactos (mientras no existan, la web muestra un placeholder elegante):
+Las fotos del interior ya están en `assets/` con estos nombres (si cambias alguna, conserva el nombre):
 
 | Archivo | Foto |
 |---|---|
 | `assets/interior-1.jpg` | Vista panorámica desde el loft (sala + cocina) |
 | `assets/interior-2.jpg` | Sala con el mural de la bandera de Puerto Rico |
-| `assets/interior-3.jpg` | Sofá-cama y cocina equipada |
+| `assets/interior-3.jpg` | Sofá-cama y vista hacia la cocina |
 | `assets/interior-4.jpg` | Baño con mural de cascada (El Yunque) |
 | `assets/interior-5.jpg` | Zona de cine con TV ("De aquí como el coquí") |
-| `assets/owner.jpg` | Foto del dueño (sección Historia) |
+| `assets/interior-6.jpg` | Cocina (fregadero, estufa, A/C) |
+| `assets/interior-7.jpg` | Ducha con paneles 3D |
+| `assets/interior-8.jpg` | Mural del coquí y banco artesanal |
+| `assets/interior-9.jpg` | Cabina con TV encendida |
+| `assets/owner.jpg` | ⏳ Pendiente: foto del dueño (sección Historia) |
 
 ### Bonus: Posts de Instagram automáticos
 

@@ -869,7 +869,7 @@ body.lang-transition * {
   overflow: hidden;
   box-shadow: var(--shadow);
   cursor: zoom-in;
-  grid-column: span 3;
+  grid-column: span 2;
   aspect-ratio: 4 / 3;
   background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
   transition: transform var(--transition), box-shadow var(--transition);
