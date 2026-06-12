@@ -39,7 +39,6 @@
   const bkReceiptRows = document.getElementById('bkReceiptRows');
   const bkReceiptId   = document.getElementById('bkReceiptId');
   const bkEmailNote   = document.getElementById('bkEmailNote');
-  const bkSquareReceipt = document.getElementById('bkSquareReceipt');
   const bkModalClose2   = document.getElementById('bkModalClose2');
   const summaryEl   = document.getElementById('bkSummary');
   const copyBtn     = document.getElementById('bkCopy');
@@ -405,11 +404,6 @@
       document.getElementById('bkReceiptIdLabel').textContent = t.paidRows.pkg ? 'N.º de confirmación' : 'Confirmation #';
       modal.querySelector('.bk-receipt-title').textContent = t.paidTitle;
 
-      if (data.receiptUrl) {
-        bkSquareReceipt.href = data.receiptUrl;
-        bkSquareReceipt.textContent = t.paidReceiptBtn;
-        bkSquareReceipt.hidden = false;
-      }
       bkModalClose2.textContent = t.paidClose;
 
       const email = emailEl ? emailEl.value.trim() : '';
