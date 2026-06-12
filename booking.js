@@ -26,6 +26,7 @@
   const checkoutGrp = document.getElementById('checkoutGroup');
   const guestsEl    = document.getElementById('bkGuests');
   const nameEl      = document.getElementById('bkName');
+  const emailEl     = document.getElementById('bkEmail');
   const contactEl   = document.getElementById('bkContact');
   const totalEl     = document.getElementById('bkTotal');
   const hintEl      = document.getElementById('bkHint');
@@ -33,6 +34,13 @@
   const modal       = document.getElementById('bkModal');
   const modalClose  = document.getElementById('bkModalClose');
   const modalText   = document.getElementById('bkModalText');
+  const bkReceipt   = document.getElementById('bkReceipt');
+  const bkModalInfo = document.getElementById('bkModalInfo');
+  const bkReceiptRows = document.getElementById('bkReceiptRows');
+  const bkReceiptId   = document.getElementById('bkReceiptId');
+  const bkEmailNote   = document.getElementById('bkEmailNote');
+  const bkSquareReceipt = document.getElementById('bkSquareReceipt');
+  const bkModalClose2   = document.getElementById('bkModalClose2');
   const summaryEl   = document.getElementById('bkSummary');
   const copyBtn     = document.getElementById('bkCopy');
 
@@ -58,14 +66,18 @@
       perPersonNote: (g, pp) => `${g} persona${g === 1 ? '' : 's'} × $${pp}`,
       groupNote: 'Precio de grupo privado aplicado 🎉',
       nightNote: (n, r) => `${n} noche${n === 1 ? '' : 's'} × $${r}`,
-      fillFields: 'Completa tu nombre y contacto para continuar.',
+      fillFields: 'Completa tu nombre y correo electrónico para continuar.',
       paySquare: 'Completa el pago en la ventana de Square para confirmar tu reserva. Te contactaremos para los detalles finales.',
       noSquare: 'Recibimos tu solicitud. Cópiala y envíanosla por Instagram para confirmar tu reserva — el pago se coordina con Square.',
       copied: '✅ ¡Copiado!',
       processing: 'Procesando pago…',
-      paidTitle: '¡Pago recibido! 🎉',
-      paidText: 'Tu reserva está confirmada. Te contactaremos pronto con los detalles. ',
-      paidReceipt: 'Ver recibo',
+      paidTitle: '¡Reserva confirmada!',
+      paidSub: 'Ghetty Motor-Home · Puerto Rico',
+      paidReceiptBtn: 'Ver recibo de Square',
+      paidClose: 'Cerrar',
+      paidEmailSent: email => `📧 Recibo enviado a ${email}`,
+      paidEmailCheck: '📧 Revisa tu correo para el recibo.',
+      paidRows: { pkg: 'Paquete', checkin: 'Llegada', checkout: 'Salida', date: 'Fecha', guests: 'Personas', total: 'Total cobrado' },
       payErrCard: 'No se pudo procesar la tarjeta. Revisa los datos e intenta de nuevo.',
       payErrDates: 'Esas fechas se acaban de ocupar. Escoge otras fechas.',
       payErrNetwork: 'No se pudo conectar con el sistema de pagos. Intenta de nuevo en un momento.',
@@ -80,14 +92,18 @@
       perPersonNote: (g, pp) => `${g} guest${g === 1 ? '' : 's'} × $${pp}`,
       groupNote: 'Private group price applied 🎉',
       nightNote: (n, r) => `${n} night${n === 1 ? '' : 's'} × $${r}`,
-      fillFields: 'Please fill in your name and contact info.',
+      fillFields: 'Please fill in your name and email to continue.',
       paySquare: 'Complete the payment in the Square window to confirm your booking. We\'ll reach out with the final details.',
       noSquare: 'We got your request! Copy it and send it to us on Instagram to confirm — payment is handled through Square.',
       copied: '✅ Copied!',
       processing: 'Processing payment…',
-      paidTitle: 'Payment received! 🎉',
-      paidText: 'Your booking is confirmed. We\'ll contact you soon with the details. ',
-      paidReceipt: 'View receipt',
+      paidTitle: 'Booking confirmed!',
+      paidSub: 'Ghetty Motor-Home · Puerto Rico',
+      paidReceiptBtn: 'View Square receipt',
+      paidClose: 'Close',
+      paidEmailSent: email => `📧 Receipt sent to ${email}`,
+      paidEmailCheck: '📧 Check your email for the receipt.',
+      paidRows: { pkg: 'Package', checkin: 'Check-in', checkout: 'Check-out', date: 'Date', guests: 'Guests', total: 'Total charged' },
       payErrCard: 'The card could not be processed. Check the details and try again.',
       payErrDates: 'Those dates were just booked. Please pick different dates.',
       payErrNetwork: 'Could not reach the payment system. Please try again in a moment.',
@@ -351,7 +367,9 @@
           end: pkgSelect.value === 'night' ? selEnd : selStart,
           guests: parseInt(guestsEl.value, 10),
           name: nameEl.value.trim(),
-          contact: contactEl.value.trim(),
+          email: emailEl ? emailEl.value.trim() : '',
+          contact: contactEl ? contactEl.value.trim() : '',
+          lang: lang(),
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -364,20 +382,44 @@
         }
         return;
       }
-      // ✅ Pago aprobado
-      summaryEl.textContent = buildSummary() + `\n💳 ${data.paymentId}`;
-      modal.querySelector('h3').textContent = T().paidTitle;
-      modalText.textContent = T().paidText;
+      // ✅ Pago aprobado — rellenar el recibo profesional
+      const t = T();
+      const calc = computeTotal();
+      const rows = t.paidRows;
+      const pkgName = t.pkgNames[pkgSelect.value] || pkgSelect.value;
+      const rowData = [
+        [rows.pkg, pkgName],
+        pkgSelect.value === 'night'
+          ? [rows.checkin, selStart]
+          : [rows.date, selStart],
+        pkgSelect.value === 'night' ? [rows.checkout, selEnd] : null,
+        [rows.guests, guestsEl.value],
+        [rows.total, `$${(data.total || (calc ? calc.amount : 0)).toFixed(2)} USD`],
+      ].filter(Boolean);
+
+      bkReceiptRows.innerHTML = rowData.map(([k, v]) =>
+        `<tr><td class="bk-rt-label">${k}</td><td class="bk-rt-value">${v}</td></tr>`
+      ).join('');
+
+      bkReceiptId.textContent = data.paymentId || '';
+      document.getElementById('bkReceiptIdLabel').textContent = t.paidRows.pkg ? 'N.º de confirmación' : 'Confirmation #';
+      modal.querySelector('.bk-receipt-title').textContent = t.paidTitle;
+
       if (data.receiptUrl) {
-        modalText.innerHTML = '';
-        modalText.append(T().paidText);
-        const a = document.createElement('a');
-        a.href = data.receiptUrl;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.textContent = T().paidReceipt;
-        modalText.appendChild(a);
+        bkSquareReceipt.href = data.receiptUrl;
+        bkSquareReceipt.textContent = t.paidReceiptBtn;
+        bkSquareReceipt.hidden = false;
       }
+      bkModalClose2.textContent = t.paidClose;
+
+      const email = emailEl ? emailEl.value.trim() : '';
+      if (email) {
+        bkEmailNote.textContent = data.emailSent ? t.paidEmailSent(email) : t.paidEmailCheck;
+        bkEmailNote.hidden = false;
+      }
+
+      bkReceipt.hidden = false;
+      bkModalInfo.hidden = true;
       modal.classList.add('open');
       form.reset();
       selStart = null; selEnd = null;
@@ -401,10 +443,11 @@
       document.querySelector('.booking-card--calendar')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-    if (!nameEl.value.trim() || !contactEl.value.trim()) {
+    const emailVal = emailEl ? emailEl.value.trim() : '';
+    if (!nameEl.value.trim() || !emailVal) {
       hintEl.textContent = T().fillFields;
       hintEl.classList.add('booking-hint--error');
-      (nameEl.value.trim() ? contactEl : nameEl).focus();
+      (nameEl.value.trim() ? emailEl : nameEl).focus();
       return;
     }
 
@@ -417,6 +460,8 @@
     // Alternativa: enlace de pago de Square o resumen por Instagram
     const link = (cfg.squarePaymentLinks || {})[pkgSelect.value];
     summaryEl.textContent = buildSummary();
+    bkReceipt.hidden = true;
+    bkModalInfo.hidden = false;
     if (link) {
       window.open(link, '_blank', 'noopener');
       modalText.textContent = T().paySquare;
@@ -426,8 +471,10 @@
     modal.classList.add('open');
   });
 
-  modalClose.addEventListener('click', () => modal.classList.remove('open'));
-  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+  function closeModal() { modal.classList.remove('open'); }
+  modalClose.addEventListener('click', closeModal);
+  if (bkModalClose2) bkModalClose2.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
   copyBtn.addEventListener('click', async () => {
     try {

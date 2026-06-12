@@ -116,6 +116,92 @@ async function recordBooking(env, booking) {
   if (!res.ok) throw new Error(`escribir bookings.json: ${res.status}`);
 }
 
+/** Envía el recibo por correo usando Resend. Solo si RESEND_API_KEY está configurado. */
+async function sendReceiptEmail(env, { to, name, pkg, start, end, guests, total, paymentId, receiptUrl, lang }) {
+  if (!env.RESEND_API_KEY || !to || !to.includes('@')) return false;
+
+  const isEs = (lang || 'es') === 'es';
+  const pkgNames = {
+    night: isEs ? 'Renta por noche' : 'Nightly Rental',
+    exp6h: isEs ? 'Experiencia Tropical (6h)' : 'Tropical Experience (6h)',
+    exp8h: isEs ? 'Experiencia Isla Completa (8h)' : 'Full Island Experience (8h)',
+  };
+  const pkgLabel = pkgNames[pkg] || pkg;
+  const isNight = pkg === 'night';
+  const dateRow = isEs
+    ? `<tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:10px 0 10px 24px;border-bottom:1px solid #f0f0f0;width:42%">Llegada</td><td style="font-weight:600;font-size:15px;text-align:right;padding:10px 24px 10px 0;border-bottom:1px solid #f0f0f0">${start}</td></tr>${isNight ? `<tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:10px 0 10px 24px;border-bottom:1px solid #f0f0f0">Salida</td><td style="font-weight:600;font-size:15px;text-align:right;padding:10px 24px 10px 0;border-bottom:1px solid #f0f0f0">${end}</td></tr>` : ''}`
+    : `<tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:10px 0 10px 24px;border-bottom:1px solid #f0f0f0;width:42%">Check-in</td><td style="font-weight:600;font-size:15px;text-align:right;padding:10px 24px 10px 0;border-bottom:1px solid #f0f0f0">${start}</td></tr>${isNight ? `<tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:10px 0 10px 24px;border-bottom:1px solid #f0f0f0">Check-out</td><td style="font-weight:600;font-size:15px;text-align:right;padding:10px 24px 10px 0;border-bottom:1px solid #f0f0f0">${end}</td></tr>` : ''}`;
+
+  const subject = isEs
+    ? `✅ Reserva confirmada — Ghetty Motor-Home`
+    : `✅ Booking confirmed — Ghetty Motor-Home`;
+
+  const html = `<!DOCTYPE html><html lang="${isEs ? 'es' : 'en'}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject}</title></head><body style="margin:0;padding:0;background:#f4f4f5;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;padding:40px 20px">
+<tr><td align="center">
+<table width="100%" style="max-width:480px;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.10)">
+  <!-- Header -->
+  <tr><td style="background:linear-gradient(135deg,#0a2342 0%,#1a5276 100%);padding:40px 32px 32px;text-align:center">
+    <div style="display:inline-block;background:rgba(255,255,255,0.12);border-radius:14px;padding:8px;margin-bottom:20px">
+      <img src="https://jaimeespinalpr.github.io/Getty/assets/logo.png" alt="Ghetty" width="60" height="60" style="display:block;border-radius:10px"/>
+    </div>
+    <div style="display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;background:#10b981;border-radius:50%;margin-bottom:16px">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h1 style="margin:0 0 6px;color:#fff;font-size:24px;font-weight:800;letter-spacing:-0.02em">${isEs ? '¡Reserva confirmada!' : 'Booking confirmed!'}</h1>
+    <p style="margin:0;color:rgba(255,255,255,0.65);font-size:13px;letter-spacing:0.02em">Ghetty Motor-Home · Puerto Rico</p>
+  </td></tr>
+
+  <!-- Greeting -->
+  <tr><td style="padding:28px 32px 0">
+    <p style="margin:0;color:#374151;font-size:15px;line-height:1.6">${isEs ? `Hola <strong>${name}</strong>, tu reserva está confirmada y tu pago ha sido procesado exitosamente.` : `Hi <strong>${name}</strong>, your booking is confirmed and your payment has been successfully processed.`}</p>
+  </td></tr>
+
+  <!-- Details table -->
+  <tr><td style="padding:20px 0 0">
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0">
+      <tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:12px 0 12px 32px;border-bottom:1px solid #f0f0f0;width:42%">${isEs ? 'Paquete' : 'Package'}</td><td style="font-weight:600;font-size:15px;text-align:right;padding:12px 32px 12px 0;border-bottom:1px solid #f0f0f0">${pkgLabel}</td></tr>
+      ${dateRow}
+      <tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:12px 0 12px 32px;border-bottom:1px solid #f0f0f0">${isEs ? 'Personas' : 'Guests'}</td><td style="font-weight:600;font-size:15px;text-align:right;padding:12px 32px 12px 0;border-bottom:1px solid #f0f0f0">${guests}</td></tr>
+      <tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:12px 0 12px 32px">${isEs ? 'Total cobrado' : 'Total charged'}</td><td style="font-weight:800;font-size:16px;text-align:right;padding:12px 32px 12px 0;color:#0a2342">$${(total || 0).toFixed(2)} USD</td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Confirmation # -->
+  <tr><td style="padding:16px 32px 0">
+    <p style="margin:0 0 4px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:2px">${isEs ? 'N.º de confirmación' : 'Confirmation #'}</p>
+    <p style="margin:0;font-family:monospace;font-size:13px;color:#374151;word-break:break-all">${paymentId}</p>
+  </td></tr>
+
+  <!-- Receipt button -->
+  ${receiptUrl ? `<tr><td style="padding:24px 32px 0;text-align:center"><a href="${receiptUrl}" style="display:inline-block;background:linear-gradient(135deg,#0a2342,#1a5276);color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:12px">${isEs ? 'Ver recibo de Square' : 'View Square receipt'}</a></td></tr>` : ''}
+
+  <!-- Footer -->
+  <tr><td style="padding:28px 32px 36px;text-align:center;border-top:1px solid #f0f0f0;margin-top:24px">
+    <p style="margin:0 0 4px;font-size:13px;color:#6b7280">${isEs ? '¿Preguntas? Escríbenos en Instagram' : 'Questions? Reach us on Instagram'}</p>
+    <a href="https://www.instagram.com/ghettymotorhome/" style="color:#1a5276;font-weight:700;font-size:13px;text-decoration:none">@ghettymotorhome</a>
+    <p style="margin:16px 0 0;font-size:11px;color:#d1d5db">© ${new Date().getFullYear()} Ghetty Motor-Home · Puerto Rico</p>
+  </td></tr>
+</table>
+</td></tr></table>
+</body></html>`;
+
+  try {
+    const fromAddr = env.RESEND_FROM || 'Ghetty Motor-Home <onboarding@resend.dev>';
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ from: fromAddr, to: [to], subject, html }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 /** Auto-diagnóstico: verifica el token contra Square SIN exponerlo. */
 async function healthCheck(env) {
   const out = {
@@ -172,7 +258,7 @@ export default {
       return json(env, { error: 'invalid_json' }, 400);
     }
 
-    const { sourceId, package: pkg, start, end, guests, name, contact } = body;
+    const { sourceId, package: pkg, start, end, guests, name, email, contact, lang } = body;
     if (!sourceId || typeof sourceId !== 'string') {
       return json(env, { error: 'missing_card_token' }, 400);
     }
@@ -234,12 +320,27 @@ export default {
       }
     }
 
+    const receiptUrl = payData.payment.receipt_url || null;
+    const emailSent = await sendReceiptEmail(env, {
+      to: email || '',
+      name: String(name || '').slice(0, 80),
+      pkg,
+      start,
+      end,
+      guests: parseInt(guests, 10),
+      total: amount / 100,
+      paymentId: payData.payment.id,
+      receiptUrl,
+      lang: lang || 'es',
+    });
+
     return json(env, {
       ok: true,
       paymentId: payData.payment.id,
-      receiptUrl: payData.payment.receipt_url || null,
+      receiptUrl,
       total: amount / 100,
       bookingRecorded,
+      emailSent,
     });
   },
 };
