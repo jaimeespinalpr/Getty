@@ -116,10 +116,50 @@ async function recordBooking(env, booking) {
   if (!res.ok) throw new Error(`escribir bookings.json: ${res.status}`);
 }
 
+/** Auto-diagnóstico: verifica el token contra Square SIN exponerlo. */
+async function healthCheck(env) {
+  const out = {
+    env: env.SQUARE_ENV || '(no definido)',
+    tokenConfigured: Boolean(env.SQUARE_ACCESS_TOKEN),
+    tokenLength: (env.SQUARE_ACCESS_TOKEN || '').length,
+    tokenHasWhitespace: /\s/.test(env.SQUARE_ACCESS_TOKEN || ''),
+    configuredLocation: env.SQUARE_LOCATION_ID || '(no definido)',
+  };
+  if (!out.tokenConfigured) {
+    out.squareAuth = 'sin_token';
+    return out;
+  }
+  const base = env.SQUARE_ENV === 'production'
+    ? 'https://connect.squareup.com'
+    : 'https://connect.squareupsandbox.com';
+  try {
+    const res = await fetch(`${base}/v2/locations`, {
+      headers: {
+        Authorization: `Bearer ${(env.SQUARE_ACCESS_TOKEN || '').trim()}`,
+        'Square-Version': '2025-10-16',
+      },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      out.squareAuth = data.errors?.[0]?.code || `http_${res.status}`;
+    } else {
+      out.squareAuth = 'ok';
+      out.locations = (data.locations || []).map((l) => ({ id: l.id, name: l.name, status: l.status }));
+      out.locationMatch = (data.locations || []).some((l) => l.id === env.SQUARE_LOCATION_ID);
+    }
+  } catch (e) {
+    out.squareAuth = `fetch_error: ${e.message}`;
+  }
+  return out;
+}
+
 export default {
   async fetch(request, env) {
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: cors(env) });
+    }
+    if (request.method === 'GET' && new URL(request.url).pathname === '/health') {
+      return json(env, await healthCheck(env));
     }
     if (request.method !== 'POST') {
       return json(env, { error: 'method_not_allowed' }, 405);
@@ -153,7 +193,7 @@ export default {
     const payRes = await fetch(`${base}/v2/payments`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${env.SQUARE_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${(env.SQUARE_ACCESS_TOKEN || '').trim()}`,
         'Content-Type': 'application/json',
         'Square-Version': '2025-10-16',
       },

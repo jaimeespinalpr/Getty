@@ -20,3 +20,8 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: worker
+
+      - name: Verificar conexión con Square (health check)
+        run: |
+          sleep 10
+          curl -sS --max-time 30 https://ghetty-pay.jaimeespinalpr.workers.dev/health | python3 -m json.tool
