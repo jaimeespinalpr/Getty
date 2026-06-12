@@ -1,0 +1,5 @@
+{
+  "_help": "Reservas hechas en la web (confirmadas por el dueño). 'end' es el día de salida (checkout, no se bloquea). Al hacer push, el workflow regenera availability.json y ghetty-web-bookings.ics automáticamente.",
+  "bookings": [
+  ]
+}
