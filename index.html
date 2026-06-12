@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ghetty Motor-Home Beach Experience | Puerto Rico</title>
-  <meta name="description" content="Descubre las playas más espectaculares de Puerto Rico a bordo del Ghetty Motor-Home. Experiencias privadas para grupos de hasta 6 personas."/>
+  <title>Ghetty Motor-Home | Renta & Beach Experience · Puerto Rico</title>
+  <meta name="description" content="Renta el Ghetty Motor-Home o vive una experiencia de playa privada en Puerto Rico. Camper temático boricua con murales pintados a mano. Reserva en línea con fechas sincronizadas con Airbnb."/>
   <meta property="og:title" content="Ghetty Motor-Home Beach Experience"/>
   <meta property="og:description" content="Experiencias privadas de playa en Puerto Rico. Grupos de hasta 6 personas."/>
   <meta property="og:image" content="assets/beach_hero.png"/>
@@ -22,8 +22,10 @@
       <span class="nav-brand">Ghetty Motor-Home</span>
       <ul class="nav-links">
         <li><a href="#experiencia" data-i18n="nav.experience">Experiencia</a></li>
+        <li><a href="#motorhome" data-i18n="nav.motorhome">El Motor-Home</a></li>
         <li><a href="#precios" data-i18n="nav.prices">Precios</a></li>
         <li><a href="#galeria" data-i18n="nav.gallery">Galería</a></li>
+        <li><a href="#historia" data-i18n="nav.story">Historia</a></li>
         <li><a href="#reservar" class="btn-nav" data-i18n="nav.book">Reservar</a></li>
       </ul>
       <!-- Language Switcher -->
@@ -43,8 +45,10 @@
     </div>
     <ul class="mobile-menu" id="mobileMenu">
       <li><a href="#experiencia" data-i18n="nav.experience">Experiencia</a></li>
+      <li><a href="#motorhome" data-i18n="nav.motorhome">El Motor-Home</a></li>
       <li><a href="#precios" data-i18n="nav.prices">Precios</a></li>
       <li><a href="#galeria" data-i18n="nav.gallery">Galería</a></li>
+      <li><a href="#historia" data-i18n="nav.story">Historia</a></li>
       <li><a href="#reservar" data-i18n="nav.book">Reservar</a></li>
     </ul>
   </nav>
@@ -121,6 +125,54 @@
     </div>
   </section>
 
+  <!-- ── MOTOR-HOME INTERIOR ── -->
+  <section id="motorhome" class="section section-alt">
+    <div class="container">
+      <div class="section-tag" data-i18n="mh.tag">Conoce el Camper</div>
+      <h2 class="section-title" data-i18n="mh.title">Un Pedacito de Puerto Rico Sobre Ruedas</h2>
+      <p class="section-sub" data-i18n="mh.sub">Cada rincón del Ghetty fue pintado a mano: la bandera, el flamboyán, el coquí y hasta una cascada del Yunque en el baño. Esto no es un camper cualquiera — es una obra de arte boricua que también puedes rentar para quedarte.</p>
+
+      <div class="mh-gallery">
+        <figure class="mh-photo mh-photo--wide" data-emoji="🚐">
+          <img src="assets/interior-1.jpg" alt="Vista panorámica del interior del Ghetty Motor-Home con murales de Puerto Rico" loading="lazy"/>
+          <figcaption data-i18n="mh.cap1">Vista panorámica desde el loft: sala, cocina y arte por todas partes</figcaption>
+        </figure>
+        <figure class="mh-photo" data-emoji="🇵🇷">
+          <img src="assets/interior-2.jpg" alt="Mural de la bandera de Puerto Rico en la sala del motorhome" loading="lazy"/>
+          <figcaption data-i18n="mh.cap2">La bandera de Puerto Rico te recibe en la sala</figcaption>
+        </figure>
+        <figure class="mh-photo" data-emoji="🛋️">
+          <img src="assets/interior-3.jpg" alt="Sofá-cama y cocina equipada del Ghetty Motor-Home" loading="lazy"/>
+          <figcaption data-i18n="mh.cap3">Sofá-cama, techo de madera y cocina completamente equipada</figcaption>
+        </figure>
+        <figure class="mh-photo" data-emoji="🚿">
+          <img src="assets/interior-4.jpg" alt="Baño privado con mural de cascada inspirado en El Yunque" loading="lazy"/>
+          <figcaption data-i18n="mh.cap4">Baño privado con bañera y mural de cascada estilo El Yunque</figcaption>
+        </figure>
+        <figure class="mh-photo" data-emoji="📺">
+          <img src="assets/interior-5.jpg" alt="Zona de cine con TV y mural De aquí como el coquí" loading="lazy"/>
+          <figcaption data-i18n="mh.cap5">«De aquí como el coquí» — zona de cine con TV y streaming</figcaption>
+        </figure>
+      </div>
+
+      <div class="mh-amenities">
+        <span class="mh-chip">❄️ <span data-i18n="mh.am1">Aire acondicionado</span></span>
+        <span class="mh-chip">🍳 <span data-i18n="mh.am2">Cocina equipada</span></span>
+        <span class="mh-chip">🚿 <span data-i18n="mh.am3">Baño privado con bañera</span></span>
+        <span class="mh-chip">📺 <span data-i18n="mh.am4">TV con streaming</span></span>
+        <span class="mh-chip">🛏️ <span data-i18n="mh.am5">Sofá-cama + loft</span></span>
+        <span class="mh-chip">🎨 <span data-i18n="mh.am6">Murales pintados a mano</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">&times;</button>
+    <img src="" alt="" id="lightboxImg"/>
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+
   <!-- ── PRICING ── -->
   <section id="precios" class="section section-dark">
     <div class="container">
@@ -129,6 +181,26 @@
       <p class="section-sub light" data-i18n="pricing.sub">Precios transparentes, sin sorpresas. ¡Más personas = más ahorro!</p>
 
       <div class="pricing-grid">
+        <!-- Nightly rental -->
+        <div class="pricing-card">
+          <div class="pricing-emoji">🌙</div>
+          <h3 class="pricing-name" data-i18n="pkg0.name">Renta por Noche</h3>
+          <div class="pricing-duration" data-i18n="pkg0.duration">Quédate en el Ghetty</div>
+          <div class="pricing-options">
+            <div class="price-option featured">
+              <span class="price-label" data-i18n="pkg0.perNight">Por noche</span>
+              <div class="price-amount"><sup>$</sup><span id="nightlyRateDisplay">150</span></div>
+            </div>
+          </div>
+          <ul class="pricing-includes">
+            <li data-i18n="pkg0.inc1">✅ Motorhome completo para ti</li>
+            <li data-i18n="pkg0.inc2">✅ A/C, cocina, baño y TV</li>
+            <li data-i18n="pkg0.inc3">✅ Fechas sincronizadas con Airbnb</li>
+            <li data-i18n="pkg0.inc4">✅ Pago seguro con Square</li>
+          </ul>
+          <a href="#reservar" class="btn-price" data-package="night" data-i18n="pkg0.btn">Reservar Noches</a>
+        </div>
+
         <!-- 6h -->
         <div class="pricing-card">
           <div class="pricing-emoji">🌴</div>
@@ -151,7 +223,7 @@
             <li data-i18n="pkg1.inc3">✅ Agua & refrigerios</li>
             <li data-i18n="pkg1.inc4">✅ Guía local personalizado</li>
           </ul>
-          <a href="#reservar" class="btn-price" id="reserve-6h" data-i18n="pkg1.btn">Reservar 6h</a>
+          <a href="#reservar" class="btn-price" id="reserve-6h" data-package="exp6h" data-i18n="pkg1.btn">Reservar 6h</a>
         </div>
 
         <!-- 8h -->
@@ -177,11 +249,111 @@
             <li data-i18n="pkg2.inc3">✅ Parada en punto panorámico</li>
             <li data-i18n="pkg2.inc4">✅ Más tiempo en el agua</li>
           </ul>
-          <a href="#reservar" class="btn-price btn-price--best" id="reserve-8h" data-i18n="pkg2.btn">Reservar 8h</a>
+          <a href="#reservar" class="btn-price btn-price--best" id="reserve-8h" data-package="exp8h" data-i18n="pkg2.btn">Reservar 8h</a>
         </div>
       </div>
 
       <p class="pricing-note" data-i18n="pricing.note">💡 ¿Tienes un grupo grande? ¡Contáctanos por Instagram para precios especiales!</p>
+    </div>
+  </section>
+
+  <!-- ── BOOKING ── -->
+  <section id="reservar" class="section">
+    <div class="container">
+      <div class="section-tag" data-i18n="book.tag">Reserva en Línea</div>
+      <h2 class="section-title" data-i18n="book.title">Escoge tus Fechas</h2>
+      <p class="section-sub" data-i18n="book.sub">Disponibilidad en tiempo real, sincronizada con Airbnb. Lo que se reserva aquí se bloquea allá — y viceversa. Paga seguro con Square.</p>
+
+      <div class="booking-layout">
+        <!-- Calendar -->
+        <div class="booking-card booking-card--calendar">
+          <div class="cal-header">
+            <button class="cal-nav" id="calPrev" aria-label="Mes anterior">&#8592;</button>
+            <div class="cal-title" id="calTitle">—</div>
+            <button class="cal-nav" id="calNext" aria-label="Mes siguiente">&#8594;</button>
+          </div>
+          <div class="cal-weekdays" id="calWeekdays"></div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="cal-legend">
+            <span class="legend-item"><span class="legend-dot legend-dot--free"></span><span data-i18n="book.legendFree">Disponible</span></span>
+            <span class="legend-item"><span class="legend-dot legend-dot--booked"></span><span data-i18n="book.legendBooked">Ocupado</span></span>
+            <span class="legend-item"><span class="legend-dot legend-dot--selected"></span><span data-i18n="book.legendSel">Tu selección</span></span>
+          </div>
+          <p class="cal-sync-note">🔄 <span data-i18n="book.sync">Calendario sincronizado con Airbnb</span> <span class="cal-sync-time" id="calSyncTime"></span></p>
+        </div>
+
+        <!-- Form -->
+        <form class="booking-card booking-card--form" id="bookingForm" novalidate>
+          <div class="form-group">
+            <label for="bkPackage" data-i18n="book.package">Tipo de reserva</label>
+            <select id="bkPackage" required>
+              <option value="night" data-i18n="book.pkgNight">🌙 Renta por noche</option>
+              <option value="exp6h" data-i18n="book.pkg6">🌴 Experiencia Tropical (6h)</option>
+              <option value="exp8h" data-i18n="book.pkg8">🏝️ Experiencia Isla Completa (8h)</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="book.checkin">Llegada</label>
+              <div class="date-display" id="bkCheckin" data-i18n-placeholder>—</div>
+            </div>
+            <div class="form-group" id="checkoutGroup">
+              <label data-i18n="book.checkout">Salida</label>
+              <div class="date-display" id="bkCheckout">—</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bkGuests" data-i18n="book.guests">Personas</label>
+            <select id="bkGuests">
+              <option value="1">1</option><option value="2" selected>2</option>
+              <option value="3">3</option><option value="4">4</option>
+              <option value="5">5</option><option value="6">6</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bkName" data-i18n="book.name">Nombre completo</label>
+            <input type="text" id="bkName" autocomplete="name" required/>
+          </div>
+
+          <div class="form-group">
+            <label for="bkContact" data-i18n="book.contact">Email o teléfono</label>
+            <input type="text" id="bkContact" autocomplete="email" required/>
+          </div>
+
+          <div class="booking-total">
+            <span data-i18n="book.total">Total estimado</span>
+            <span class="booking-total-amount" id="bkTotal">—</span>
+          </div>
+          <p class="booking-hint" id="bkHint" data-i18n="book.selectDates">👆 Selecciona tus fechas en el calendario</p>
+
+          <button type="submit" class="btn-primary btn-book" id="bkSubmit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            <span data-i18n="book.pay">Pagar con Square</span>
+          </button>
+          <p class="booking-secure" data-i18n="book.payNote">🔒 Pago procesado de forma segura por Square</p>
+
+          <div class="booking-alt">
+            <span data-i18n="book.alt">¿Prefieres otra vía?</span>
+            <a href="https://www.instagram.com/ghettymotorhome/" target="_blank" rel="noopener noreferrer" id="altIgLink" data-i18n="book.altIg">Instagram</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" id="altAirbnbLink" hidden data-i18n="book.altAirbnb">Airbnb</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Confirmation modal -->
+    <div class="bk-modal" id="bkModal" role="dialog" aria-modal="true">
+      <div class="bk-modal-card">
+        <button class="bk-modal-close" id="bkModalClose" aria-label="Cerrar">&times;</button>
+        <div class="bk-modal-emoji">🎉</div>
+        <h3 data-i18n="book.confirmTitle">¡Solicitud lista!</h3>
+        <p id="bkModalText" data-i18n="book.confirmText">Completa el pago en la ventana de Square para confirmar tu reserva. Te contactaremos para los detalles finales.</p>
+        <pre class="bk-summary" id="bkSummary"></pre>
+        <button class="btn-ghost bk-copy" id="bkCopy" data-i18n="book.copy">📋 Copiar resumen</button>
+      </div>
     </div>
   </section>
 
@@ -218,8 +390,30 @@
     </div>
   </section>
 
-  <!-- ── BOOK / CTA ── -->
-  <section id="reservar" class="section section-cta">
+  <!-- ── HISTORIA / ABOUT ── -->
+  <section id="historia" class="section section-dark">
+    <div class="container">
+      <div class="story-layout">
+        <div class="story-photo">
+          <figure class="mh-photo story-img" data-emoji="🐸">
+            <img src="assets/owner.jpg" alt="El dueño del Ghetty Motor-Home" loading="lazy"/>
+          </figure>
+          <div class="story-badge" data-i18n="story.badge">Hecho a mano en Puerto Rico 🇵🇷</div>
+        </div>
+        <div class="story-content">
+          <div class="section-tag light" data-i18n="story.tag">Nuestra Historia</div>
+          <h2 class="section-title light" data-i18n="story.title">De Aquí, Como el Coquí</h2>
+          <p class="story-p" data-i18n="story.p1">El Ghetty Motor-Home nació de un sueño sencillo: compartir el Puerto Rico de verdad — el de las playas escondidas, la música, el flamboyán y el coquí — con todo el que quiera vivirlo.</p>
+          <p class="story-p" data-i18n="story.p2">Lo que empezó como un camper viejo se transformó, tablita a tablita y brochazo a brochazo, en una obra de arte rodante. Cada mural fue pintado a mano: la bandera en la sala, el árbol de mangó, la cascada del baño inspirada en El Yunque y el coquí que le da la bienvenida a cada visitante.</p>
+          <p class="story-p" data-i18n="story.p3">Hoy el Ghetty es más que un motorhome: es una experiencia boricua que puedes rentar para quedarte o para descubrir las playas de la isla. Y esta historia apenas comienza…</p>
+          <blockquote class="story-quote" data-i18n="story.quote">«No es solo un camper. Es Puerto Rico sobre ruedas.»</blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT / CTA ── -->
+  <section id="contacto" class="section section-cta">
     <div class="container">
       <div class="cta-card">
         <div class="cta-bg-img">
@@ -227,9 +421,9 @@
           <div class="cta-overlay"></div>
         </div>
         <div class="cta-content">
-          <div class="section-tag light" data-i18n="cta.tag">¿Listo para la aventura?</div>
-          <h2 class="cta-title" data-i18n="cta.title">Reserva tu Experiencia</h2>
-          <p class="cta-sub" data-i18n-html="cta.sub">Escríbenos por Instagram y coordinamos la fecha perfecta para ti.<br/>Cupos limitados — ¡no te quedes sin el tuyo!</p>
+          <div class="section-tag light" data-i18n="cta.tag">¿Tienes preguntas?</div>
+          <h2 class="cta-title" data-i18n="cta.title">Hablemos</h2>
+          <p class="cta-sub" data-i18n-html="cta.sub">Escríbenos por Instagram para cualquier duda, grupos grandes<br/>o peticiones especiales. ¡Respondemos rápido!</p>
           <a href="https://www.instagram.com/ghettymotorhome/" target="_blank" rel="noopener noreferrer" class="btn-reserve-big" id="main-reserve-btn">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
             <span data-i18n="cta.btn">Escríbenos en Instagram</span>
@@ -252,8 +446,10 @@
         </div>
         <div class="footer-links">
           <a href="#experiencia" data-i18n="nav.experience">Experiencia</a>
+          <a href="#motorhome" data-i18n="nav.motorhome">El Motor-Home</a>
           <a href="#precios" data-i18n="nav.prices">Precios</a>
-          <a href="#galeria" data-i18n="nav.gallery">Galería</a>
+          <a href="#reservar" data-i18n="nav.book">Reservar</a>
+          <a href="#historia" data-i18n="nav.story">Historia</a>
           <a href="https://www.instagram.com/ghettymotorhome/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </div>
       </div>
@@ -263,6 +459,8 @@
     </div>
   </footer>
 
+  <script src="config.js"></script>
   <script src="app.js"></script>
+  <script src="booking.js"></script>
 </body>
 </html>

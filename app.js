@@ -11,8 +11,10 @@
 const TRANSLATIONS = {
   es: {
     'nav.experience': 'Experiencia',
+    'nav.motorhome':  'El Motor-Home',
     'nav.prices':     'Precios',
     'nav.gallery':    'Galería',
+    'nav.story':      'Historia',
     'nav.book':       'Reservar',
 
     'hero.title':    'La Playa,<br/><em>A Tu Manera</em>',
@@ -65,6 +67,65 @@ const TRANSLATIONS = {
     'pkg2.inc4':     '✅ Más tiempo en el agua',
     'pkg2.btn':      'Reservar 8h',
 
+    'pkg0.name':     'Renta por Noche',
+    'pkg0.duration': 'Quédate en el Ghetty',
+    'pkg0.perNight': 'Por noche',
+    'pkg0.inc1':     '✅ Motorhome completo para ti',
+    'pkg0.inc2':     '✅ A/C, cocina, baño y TV',
+    'pkg0.inc3':     '✅ Fechas sincronizadas con Airbnb',
+    'pkg0.inc4':     '✅ Pago seguro con Square',
+    'pkg0.btn':      'Reservar Noches',
+
+    'mh.tag':   'Conoce el Camper',
+    'mh.title': 'Un Pedacito de Puerto Rico Sobre Ruedas',
+    'mh.sub':   'Cada rincón del Ghetty fue pintado a mano: la bandera, el flamboyán, el coquí y hasta una cascada del Yunque en el baño. Esto no es un camper cualquiera — es una obra de arte boricua que también puedes rentar para quedarte.',
+    'mh.cap1':  'Vista panorámica desde el loft: sala, cocina y arte por todas partes',
+    'mh.cap2':  'La bandera de Puerto Rico te recibe en la sala',
+    'mh.cap3':  'Sofá-cama, techo de madera y cocina completamente equipada',
+    'mh.cap4':  'Baño privado con bañera y mural de cascada estilo El Yunque',
+    'mh.cap5':  '«De aquí como el coquí» — zona de cine con TV y streaming',
+    'mh.am1':   'Aire acondicionado',
+    'mh.am2':   'Cocina equipada',
+    'mh.am3':   'Baño privado con bañera',
+    'mh.am4':   'TV con streaming',
+    'mh.am5':   'Sofá-cama + loft',
+    'mh.am6':   'Murales pintados a mano',
+
+    'book.tag':          'Reserva en Línea',
+    'book.title':        'Escoge tus Fechas',
+    'book.sub':          'Disponibilidad en tiempo real, sincronizada con Airbnb. Lo que se reserva aquí se bloquea allá — y viceversa. Paga seguro con Square.',
+    'book.package':      'Tipo de reserva',
+    'book.pkgNight':     '🌙 Renta por noche',
+    'book.pkg6':         '🌴 Experiencia Tropical (6h)',
+    'book.pkg8':         '🏝️ Experiencia Isla Completa (8h)',
+    'book.checkin':      'Llegada',
+    'book.checkout':     'Salida',
+    'book.guests':       'Personas',
+    'book.name':         'Nombre completo',
+    'book.contact':      'Email o teléfono',
+    'book.total':        'Total estimado',
+    'book.selectDates':  '👆 Selecciona tus fechas en el calendario',
+    'book.pay':          'Pagar con Square',
+    'book.payNote':      '🔒 Pago procesado de forma segura por Square',
+    'book.alt':          '¿Prefieres otra vía?',
+    'book.altIg':        'Instagram',
+    'book.altAirbnb':    'Airbnb',
+    'book.legendFree':   'Disponible',
+    'book.legendBooked': 'Ocupado',
+    'book.legendSel':    'Tu selección',
+    'book.sync':         'Calendario sincronizado con Airbnb',
+    'book.confirmTitle': '¡Solicitud lista!',
+    'book.confirmText':  'Completa el pago en la ventana de Square para confirmar tu reserva. Te contactaremos para los detalles finales.',
+    'book.copy':         '📋 Copiar resumen',
+
+    'story.tag':   'Nuestra Historia',
+    'story.title': 'De Aquí, Como el Coquí',
+    'story.badge': 'Hecho a mano en Puerto Rico 🇵🇷',
+    'story.p1':    'El Ghetty Motor-Home nació de un sueño sencillo: compartir el Puerto Rico de verdad — el de las playas escondidas, la música, el flamboyán y el coquí — con todo el que quiera vivirlo.',
+    'story.p2':    'Lo que empezó como un camper viejo se transformó, tablita a tablita y brochazo a brochazo, en una obra de arte rodante. Cada mural fue pintado a mano: la bandera en la sala, el árbol de mangó, la cascada del baño inspirada en El Yunque y el coquí que le da la bienvenida a cada visitante.',
+    'story.p3':    'Hoy el Ghetty es más que un motorhome: es una experiencia boricua que puedes rentar para quedarte o para descubrir las playas de la isla. Y esta historia apenas comienza…',
+    'story.quote': '«No es solo un camper. Es Puerto Rico sobre ruedas.»',
+
     'ig.tag':     'Síguenos en Instagram',
     'ig.title':   'Lo Último de Ghetty',
     'ig.sub':     'Mira la experiencia en acción — publicaciones reales, momentos reales.',
@@ -72,9 +133,9 @@ const TRANSLATIONS = {
     'ig.follow':  'Seguir @ghettymotorhome',
     'ig.viewPost':'Ver en Instagram',
 
-    'cta.tag':   '¿Listo para la aventura?',
-    'cta.title': 'Reserva tu Experiencia',
-    'cta.sub':   'Escríbenos por Instagram y coordinamos la fecha perfecta para ti.<br/>Cupos limitados — ¡no te quedes sin el tuyo!',
+    'cta.tag':   '¿Tienes preguntas?',
+    'cta.title': 'Hablemos',
+    'cta.sub':   'Escríbenos por Instagram para cualquier duda, grupos grandes<br/>o peticiones especiales. ¡Respondemos rápido!',
     'cta.btn':   'Escríbenos en Instagram',
 
     'footer.tagline': 'Beach Experience · Puerto Rico 🌴',
@@ -94,8 +155,10 @@ const TRANSLATIONS = {
 
   en: {
     'nav.experience': 'Experience',
+    'nav.motorhome':  'The Motor-Home',
     'nav.prices':     'Prices',
     'nav.gallery':    'Gallery',
+    'nav.story':      'Our Story',
     'nav.book':       'Book Now',
 
     'hero.title':    'The Beach,<br/><em>Your Way</em>',
@@ -148,6 +211,65 @@ const TRANSLATIONS = {
     'pkg2.inc4':     '✅ More time in the water',
     'pkg2.btn':      'Book 8h',
 
+    'pkg0.name':     'Nightly Rental',
+    'pkg0.duration': 'Stay in the Ghetty',
+    'pkg0.perNight': 'Per night',
+    'pkg0.inc1':     '✅ The whole motorhome to yourself',
+    'pkg0.inc2':     '✅ A/C, kitchen, bathroom & TV',
+    'pkg0.inc3':     '✅ Dates synced with Airbnb',
+    'pkg0.inc4':     '✅ Secure checkout with Square',
+    'pkg0.btn':      'Book Nights',
+
+    'mh.tag':   'Meet the Camper',
+    'mh.title': 'A Little Piece of Puerto Rico on Wheels',
+    'mh.sub':   'Every corner of the Ghetty was hand-painted: the flag, the flamboyán, the coquí — even an El Yunque waterfall in the bathroom. This isn\'t just any camper — it\'s a rolling piece of Puerto Rican art you can also rent for the night.',
+    'mh.cap1':  'Panoramic view from the loft: living room, kitchen and art everywhere',
+    'mh.cap2':  'The Puerto Rican flag welcomes you into the living room',
+    'mh.cap3':  'Sofa bed, wood-slat ceiling and a fully equipped kitchen',
+    'mh.cap4':  'Private bathroom with tub and an El Yunque-style waterfall mural',
+    'mh.cap5':  '"De aquí como el coquí" — movie corner with TV and streaming',
+    'mh.am1':   'Air conditioning',
+    'mh.am2':   'Equipped kitchen',
+    'mh.am3':   'Private bathroom with tub',
+    'mh.am4':   'TV with streaming',
+    'mh.am5':   'Sofa bed + loft',
+    'mh.am6':   'Hand-painted murals',
+
+    'book.tag':          'Book Online',
+    'book.title':        'Pick Your Dates',
+    'book.sub':          'Real-time availability, synced with Airbnb. What\'s booked here gets blocked there — and vice versa. Pay securely with Square.',
+    'book.package':      'Booking type',
+    'book.pkgNight':     '🌙 Nightly rental',
+    'book.pkg6':         '🌴 Tropical Experience (6h)',
+    'book.pkg8':         '🏝️ Full Island Experience (8h)',
+    'book.checkin':      'Check-in',
+    'book.checkout':     'Check-out',
+    'book.guests':       'Guests',
+    'book.name':         'Full name',
+    'book.contact':      'Email or phone',
+    'book.total':        'Estimated total',
+    'book.selectDates':  '👆 Select your dates on the calendar',
+    'book.pay':          'Pay with Square',
+    'book.payNote':      '🔒 Payment securely processed by Square',
+    'book.alt':          'Prefer another way?',
+    'book.altIg':        'Instagram',
+    'book.altAirbnb':    'Airbnb',
+    'book.legendFree':   'Available',
+    'book.legendBooked': 'Booked',
+    'book.legendSel':    'Your selection',
+    'book.sync':         'Calendar synced with Airbnb',
+    'book.confirmTitle': 'Request ready!',
+    'book.confirmText':  'Complete the payment in the Square window to confirm your booking. We\'ll reach out with the final details.',
+    'book.copy':         '📋 Copy summary',
+
+    'story.tag':   'Our Story',
+    'story.title': 'De Aquí, Como el Coquí',
+    'story.badge': 'Handmade in Puerto Rico 🇵🇷',
+    'story.p1':    'The Ghetty Motor-Home was born from a simple dream: sharing the real Puerto Rico — hidden beaches, music, the flamboyán and the coquí — with everyone who wants to live it.',
+    'story.p2':    'What started as an old camper was transformed, board by board and brushstroke by brushstroke, into a rolling work of art. Every mural was painted by hand: the flag in the living room, the mango tree, the El Yunque-inspired waterfall in the bathroom, and the coquí that welcomes every guest.',
+    'story.p3':    'Today the Ghetty is more than a motorhome: it\'s a Puerto Rican experience you can rent for the night or to discover the island\'s beaches. And this story is just getting started…',
+    'story.quote': '"It\'s not just a camper. It\'s Puerto Rico on wheels."',
+
     'ig.tag':     'Follow us on Instagram',
     'ig.title':   'Latest from Ghetty',
     'ig.sub':     'See the experience in action — real posts, real moments.',
@@ -155,9 +277,9 @@ const TRANSLATIONS = {
     'ig.follow':  'Follow @ghettymotorhome',
     'ig.viewPost':'View on Instagram',
 
-    'cta.tag':   'Ready for the adventure?',
-    'cta.title': 'Book Your Experience',
-    'cta.sub':   'Message us on Instagram and we\'ll find the perfect date for you.<br/>Spots are limited — don\'t miss out!',
+    'cta.tag':   'Got questions?',
+    'cta.title': 'Let\'s Talk',
+    'cta.sub':   'Message us on Instagram with any questions, large groups<br/>or special requests. We reply fast!',
     'cta.btn':   'Message us on Instagram',
 
     'footer.tagline': 'Beach Experience · Puerto Rico 🌴',
@@ -202,6 +324,9 @@ function applyTranslations(lang) {
 
   // Update placeholder cards if already rendered
   updatePlaceholderCards(lang);
+
+  // Refresh booking calendar labels (booking.js)
+  window.ghettyBookingRefresh?.();
 }
 
 function setLanguage(lang) {
@@ -506,6 +631,46 @@ async function loadInstagramPosts() {
   } catch {
     renderPlaceholders();
   }
+}
+
+/* ─────────────────────────────────────────────
+   MOTOR-HOME GALLERY — fallback + lightbox
+───────────────────────────────────────────── */
+// Si una foto aún no se ha subido a /assets, mostramos un
+// placeholder bonito en vez de una imagen rota.
+document.querySelectorAll('.mh-photo img').forEach(img => {
+  img.addEventListener('error', () => {
+    img.closest('.mh-photo')?.classList.add('mh-photo--missing');
+  });
+  if (img.complete && img.naturalWidth === 0 && img.src) {
+    img.closest('.mh-photo')?.classList.add('mh-photo--missing');
+  }
+});
+
+const lightbox        = document.getElementById('lightbox');
+const lightboxImg     = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxClose   = document.getElementById('lightboxClose');
+
+if (lightbox) {
+  document.querySelectorAll('.mh-photo:not(.story-img)').forEach(fig => {
+    fig.addEventListener('click', () => {
+      if (fig.classList.contains('mh-photo--missing')) return;
+      const img = fig.querySelector('img');
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = fig.querySelector('figcaption')?.textContent || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 }
 
 /* ─────────────────────────────────────────────
