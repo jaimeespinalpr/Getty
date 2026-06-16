@@ -18,6 +18,11 @@
 //    GITHUB_TOKEN         (secreto, opcional) PAT con permiso de
 //                                    contenido sobre el repo, para
 //                                    registrar reservas automáticamente
+//    RESEND_API_KEY       (secreto, opcional) para enviar el recibo por email
+//    RESEND_FROM          (var, opcional)  remitente del recibo,
+//                                    ej. Ghetty Motor-Home <bookings@ghettypr.com>
+//    RESEND_REPLY_TO      (var, opcional)  inbox para respuestas
+//                                    (por defecto info@ghettypr.com)
 // ══════════════════════════════════════════════
 
 // ⚠️ Mantener sincronizado con config.js (pricing)
@@ -188,13 +193,14 @@ async function sendReceiptEmail(env, { to, name, pkg, start, end, guests, total,
 
   try {
     const fromAddr = env.RESEND_FROM || 'Ghetty Motor-Home <onboarding@resend.dev>';
+    const replyTo = env.RESEND_REPLY_TO || 'info@ghettypr.com';
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${env.RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ from: fromAddr, to: [to], subject, html }),
+      body: JSON.stringify({ from: fromAddr, to: [to], reply_to: replyTo, subject, html }),
     });
     return res.ok;
   } catch {
