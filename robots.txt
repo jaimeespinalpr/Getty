@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jaimeespinalpr.github.io/Getty/sitemap.xml
+Sitemap: https://ghettypr.com/sitemap.xml

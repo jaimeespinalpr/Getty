@@ -35,7 +35,7 @@ Requiere un mini-servidor gratuito (Cloudflare Worker, carpeta `worker/`). Pasos
    - `SQUARE_ACCESS_TOKEN` (tipo *Secret*) = tu Access Token
    - `SQUARE_LOCATION_ID` = tu Location ID
    - `SQUARE_ENV` = `sandbox` o `production`
-   - `ALLOWED_ORIGIN` = `https://jaimeespinalpr.github.io`
+   - `ALLOWED_ORIGIN` = `https://ghettypr.com`
    - *(Opcional, para el registro automático de reservas)* `GITHUB_TOKEN` (tipo *Secret*) = un [fine-grained PAT](https://github.com/settings/personal-access-tokens) con permiso **Contents: Read and write** solo sobre este repo.
 5. **Conectar la web** — en `config.js` llena:
 
