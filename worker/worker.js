@@ -13,7 +13,7 @@
 //    SQUARE_ACCESS_TOKEN  (secreto)  Token de acceso de Square
 //    SQUARE_LOCATION_ID   (var)      Location ID de Square
 //    SQUARE_ENV           (var)      'sandbox' o 'production'
-//    ALLOWED_ORIGIN       (var)      ej. https://jaimeespinalpr.github.io
+//    ALLOWED_ORIGIN       (var)      ej. https://ghettypr.com
 //    GITHUB_REPO          (var)      ej. jaimeespinalpr/Getty
 //    GITHUB_TOKEN         (secreto, opcional) PAT con permiso de
 //                                    contenido sobre el repo, para
@@ -143,7 +143,7 @@ async function sendReceiptEmail(env, { to, name, pkg, start, end, guests, total,
   <!-- Header -->
   <tr><td style="background:linear-gradient(135deg,#0a2342 0%,#1a5276 100%);padding:40px 32px 32px;text-align:center">
     <div style="display:inline-block;background:rgba(255,255,255,0.12);border-radius:14px;padding:8px;margin-bottom:20px">
-      <img src="https://jaimeespinalpr.github.io/Getty/assets/logo.png" alt="Ghetty" width="60" height="60" style="display:block;border-radius:10px"/>
+      <img src="https://ghettypr.com/assets/logo.png" alt="Ghetty" width="60" height="60" style="display:block;border-radius:10px"/>
     </div>
     <div style="display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;background:#10b981;border-radius:50%;margin-bottom:16px">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
