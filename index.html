@@ -56,7 +56,10 @@
   <!-- ── HERO ── -->
   <section id="hero">
     <div class="hero-bg">
-      <img src="assets/beach_hero.png" alt="Playa de Puerto Rico" fetchpriority="high" width="1024" height="1024" class="hero-img"/>
+      <picture>
+        <source media="(max-width: 768px)" srcset="assets/beach_hero_mobile.png" width="1024" height="1024"/>
+        <img src="assets/beach_hero.png" alt="Playa de Puerto Rico" fetchpriority="high" width="1024" height="576" class="hero-img"/>
+      </picture>
       <div class="hero-overlay"></div>
     </div>
     <div class="hero-content">
@@ -485,7 +488,10 @@
     <div class="container">
       <div class="cta-card">
         <div class="cta-bg-img">
-          <img src="assets/beach_hero.png" alt="" aria-hidden="true" loading="lazy"/>
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/beach_hero_mobile.png"/>
+            <img src="assets/beach_hero.png" alt="" aria-hidden="true" loading="lazy"/>
+          </picture>
           <div class="cta-overlay"></div>
         </div>
         <div class="cta-content">
