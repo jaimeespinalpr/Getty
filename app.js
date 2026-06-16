@@ -156,6 +156,28 @@ const TRANSLATIONS = {
     'ph4.text':  'Palmeras, brisa marina y buena vibra puertorriqueña.',
     'ph5.title': 'Momentos para recordar',
     'ph5.text':  'Cada viaje con Ghetty es una historia que querrás contar.',
+
+    'faq.tag':   'Preguntas frecuentes',
+    'faq.title': '¿Tienes dudas? Aquí las resolvemos',
+    'faq.sub':   'Todo lo que necesitas saber antes de reservar.',
+
+    'faq.q1': '¿Qué incluye la experiencia?',
+    'faq.a1': 'Transporte en el Ghetty Motor-Home, acceso a 2–3 playas seleccionadas, agua y refrigerios para todos. Tu guía (yo mismo) está contigo durante toda la experiencia.',
+
+    'faq.q2': '¿Dónde es el punto de encuentro?',
+    'faq.a2': 'Nos encontramos en un punto acordado en el área de San Juan o Bayamón. Te enviamos la ubicación exacta por WhatsApp o Instagram al confirmar tu reserva.',
+
+    'faq.q3': '¿Puedo cancelar o cambiar mi reserva?',
+    'faq.a3': 'Sí. Puedes cancelar sin cargo hasta 48 horas antes de la experiencia. Para cambios de última hora, contáctanos directamente por Instagram y coordinamos.',
+
+    'faq.q4': '¿Qué debo llevar?',
+    'faq.a4': 'Traje de baño, toalla, protector solar, identificación y ganas de pasarla bien. El agua y los refrigerios corren por nuestra cuenta.',
+
+    'faq.q5': '¿Se permiten niños?',
+    'faq.a5': '¡Sí! El Ghetty es perfecto para familias. Los menores de 12 años no pagan extra cuando el grupo ya alcanza el precio de grupo privado.',
+
+    'faq.q6': '¿Hay que saber nadar?',
+    'faq.a6': 'No es necesario. Las playas que visitamos tienen opciones para todos, y siempre puedes disfrutar desde la orilla o quedarte en el camper con A/C.',
   },
 
   en: {
@@ -305,6 +327,28 @@ const TRANSLATIONS = {
     'ph4.text':  'Palm trees, ocean breeze and pure Puerto Rican vibes.',
     'ph5.title': 'Moments to remember',
     'ph5.text':  'Every trip with Ghetty is a story you\'ll want to tell.',
+
+    'faq.tag':   'FAQ',
+    'faq.title': 'Got questions? We\'ve got answers',
+    'faq.sub':   'Everything you need to know before booking.',
+
+    'faq.q1': 'What\'s included in the experience?',
+    'faq.a1': 'Transport in the Ghetty Motor-Home, access to 2–3 selected beaches, water and snacks for everyone. Your guide (me!) stays with you the whole time.',
+
+    'faq.q2': 'Where is the meeting point?',
+    'faq.a2': 'We meet at an agreed spot in the San Juan or Bayamón area. You\'ll receive the exact location via WhatsApp or Instagram after booking.',
+
+    'faq.q3': 'Can I cancel or change my booking?',
+    'faq.a3': 'Yes. You can cancel free of charge up to 48 hours before the experience. For last-minute changes, reach out on Instagram and we\'ll work something out.',
+
+    'faq.q4': 'What should I bring?',
+    'faq.a4': 'Swimsuit, towel, sunscreen, ID and good vibes. We take care of the water and snacks.',
+
+    'faq.q5': 'Are children allowed?',
+    'faq.a5': 'Absolutely! Ghetty is great for families. Kids under 12 ride free when the group already qualifies for the private group price.',
+
+    'faq.q6': 'Do I need to know how to swim?',
+    'faq.a6': 'Not at all. The beaches we visit have options for all skill levels, and you can always enjoy from the shore or relax in the A/C camper.',
   }
 };
 
