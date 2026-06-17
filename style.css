@@ -90,6 +90,7 @@ body {
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 8px;
+  white-space: nowrap;
   transition: color var(--transition), background var(--transition);
 }
 .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.1); }
@@ -885,6 +886,15 @@ body.lang-transition * {
 .footer-bottom { text-align: center; font-size: 0.82rem; color: rgba(255,255,255,0.35); }
 
 /* ── RESPONSIVE ── */
+/* Rango medio: compactar la barra para que todo quepa en una sola línea
+   (sin que "The Motor-Home" ni "Book Now" se partan en dos) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .nav-inner { gap: 6px; padding: 0 16px; }
+  .nav-brand { font-size: 1rem; }
+  .nav-links { gap: 2px; }
+  .nav-links a { padding: 7px 10px; font-size: 0.84rem; }
+  .btn-nav { padding: 8px 16px !important; }
+}
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .hamburger { display: flex; }
