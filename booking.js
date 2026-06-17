@@ -9,7 +9,7 @@
 
 (function () {
   const cfg = window.GHETTY_CONFIG || {};
-  const pricing = cfg.pricing || { nightlyRate: 120, cleaningFee: 40, exp6h: { perPerson: 79, group: 450 }, exp8h: { perPerson: 100, group: 600 }, maxGuests: 6 };
+  const pricing = { nightlyRate: 120, cleaningFee: 40, exp6h: { perPerson: 79, group: 450 }, exp8h: { perPerson: 100, group: 600 }, maxGuests: 6, ...cfg.pricing };
 
   /* ── DOM ── */
   const calTitle    = document.getElementById('calTitle');
