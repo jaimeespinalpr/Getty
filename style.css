@@ -480,6 +480,7 @@ body.lang-transition * {
   font-size: 0.9rem;
   margin: 8px 0;
 }
+.pricing-fee-note { text-align: center; color: var(--gold); font-size: 0.82rem; font-weight: 600; margin: -8px 0 16px; }
 .pricing-includes { list-style: none; margin-bottom: 28px; }
 .pricing-includes li { color: rgba(255,255,255,0.8); font-size: 0.95rem; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .pricing-includes li:last-child { border-bottom: none; }

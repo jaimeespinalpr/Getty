@@ -9,7 +9,7 @@
 
 (function () {
   const cfg = window.GHETTY_CONFIG || {};
-  const pricing = cfg.pricing || { nightlyRate: 150, exp6h: { perPerson: 79, group: 450 }, exp8h: { perPerson: 100, group: 600 }, maxGuests: 6 };
+  const pricing = cfg.pricing || { nightlyRate: 120, cleaningFee: 40, exp6h: { perPerson: 79, group: 450 }, exp8h: { perPerson: 100, group: 600 }, maxGuests: 6 };
 
   /* ── DOM ── */
   const calTitle    = document.getElementById('calTitle');
@@ -64,7 +64,7 @@
       needCheckout: 'Ahora toca el día de salida en el calendario',
       perPersonNote: (g, pp) => `${g} persona${g === 1 ? '' : 's'} × $${pp}`,
       groupNote: 'Precio de grupo privado aplicado 🎉',
-      nightNote: (n, r) => `${n} noche${n === 1 ? '' : 's'} × $${r}`,
+      nightNote: (n, r, fee) => `${n} noche${n === 1 ? '' : 's'} × $${r} + $${fee} cargo de limpieza`,
       fillFields: 'Completa tu nombre y correo electrónico para continuar.',
       paySquare: 'Completa el pago en la ventana de Square para confirmar tu reserva. Te contactaremos para los detalles finales.',
       noSquare: 'Recibimos tu solicitud. Cópiala y envíanosla por Instagram para confirmar tu reserva — el pago se coordina con Square.',
@@ -76,7 +76,7 @@
       paidClose: 'Cerrar',
       paidEmailSent: email => `📧 Recibo enviado a ${email}`,
       paidEmailCheck: '📧 Revisa tu correo para el recibo.',
-      paidRows: { pkg: 'Paquete', checkin: 'Llegada', checkout: 'Salida', date: 'Fecha', guests: 'Personas', total: 'Total cobrado' },
+      paidRows: { pkg: 'Paquete', checkin: 'Llegada', checkout: 'Salida', date: 'Fecha', guests: 'Personas', cleaningFee: 'Cargo de limpieza', total: 'Total cobrado' },
       payErrCard: 'No se pudo procesar la tarjeta. Revisa los datos e intenta de nuevo.',
       payErrDates: 'Esas fechas se acaban de ocupar. Escoge otras fechas.',
       payErrNetwork: 'No se pudo conectar con el sistema de pagos. Intenta de nuevo en un momento.',
@@ -90,7 +90,7 @@
       needCheckout: 'Now tap your checkout day on the calendar',
       perPersonNote: (g, pp) => `${g} guest${g === 1 ? '' : 's'} × $${pp}`,
       groupNote: 'Private group price applied 🎉',
-      nightNote: (n, r) => `${n} night${n === 1 ? '' : 's'} × $${r}`,
+      nightNote: (n, r, fee) => `${n} night${n === 1 ? '' : 's'} × $${r} + $${fee} cleaning fee`,
       fillFields: 'Please fill in your name and email to continue.',
       paySquare: 'Complete the payment in the Square window to confirm your booking. We\'ll reach out with the final details.',
       noSquare: 'We got your request! Copy it and send it to us on Instagram to confirm — payment is handled through Square.',
@@ -102,7 +102,7 @@
       paidClose: 'Close',
       paidEmailSent: email => `📧 Receipt sent to ${email}`,
       paidEmailCheck: '📧 Check your email for the receipt.',
-      paidRows: { pkg: 'Package', checkin: 'Check-in', checkout: 'Check-out', date: 'Date', guests: 'Guests', total: 'Total charged' },
+      paidRows: { pkg: 'Package', checkin: 'Check-in', checkout: 'Check-out', date: 'Date', guests: 'Guests', cleaningFee: 'Cleaning fee', total: 'Total charged' },
       payErrCard: 'The card could not be processed. Check the details and try again.',
       payErrDates: 'Those dates were just booked. Please pick different dates.',
       payErrNetwork: 'Could not reach the payment system. Please try again in a moment.',
@@ -243,7 +243,7 @@
     if (pkg === 'night') {
       if (!selStart || !selEnd) return null;
       const nights = daysBetween(selStart, selEnd);
-      return { total: nights * pricing.nightlyRate, note: T().nightNote(nights, pricing.nightlyRate) };
+      return { total: nights * pricing.nightlyRate + pricing.cleaningFee, note: T().nightNote(nights, pricing.nightlyRate, pricing.cleaningFee) };
     }
     if (!selStart) return null;
     const p = pkg === 'exp6h' ? pricing.exp6h : pricing.exp8h;
@@ -393,6 +393,7 @@
           : [rows.date, selStart],
         pkgSelect.value === 'night' ? [rows.checkout, selEnd] : null,
         [rows.guests, guestsEl.value],
+        pkgSelect.value === 'night' ? [rows.cleaningFee, `$${pricing.cleaningFee.toFixed(2)} USD`] : null,
         [rows.total, `$${(data.total || (calc ? calc.total : 0)).toFixed(2)} USD`],
       ].filter(Boolean);
 
