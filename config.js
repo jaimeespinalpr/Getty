@@ -13,10 +13,18 @@ window.GHETTY_CONFIG = {
      Cuando los 3 campos están llenos, el formulario
      muestra el campo de tarjeta automáticamente.    */
   square: {
-    applicationId: 'sandbox-sq0idb-QJw7tPPQEpjVBi65iAWNFw',   // sq0idp-... (Square Developer → Credentials)
-    locationId: 'LSSNRPYZ6G7MW',      // L... (Square Developer → Locations)
     paymentApiUrl: 'https://ghetty-pay.jaimeespinalpr.workers.dev',   // URL del worker
-    environment: 'sandbox', // 'sandbox' para pruebas, 'production' para cobrar de verdad
+    activeEnvironment: 'production', // cambia a 'sandbox' para volver a pruebas
+    environments: {
+      production: {
+        applicationId: 'sq0idp-No3PwbFk1tFq9Cj6vQ4uEA',
+        locationId: 'L5X6FQXTXV763',
+      },
+      sandbox: {
+        applicationId: 'sandbox-sq0idb-QJw7tPPQEpjVBi65iAWNFw',
+        locationId: 'LSSNRPYZ6G7MW',
+      },
+    },
   },
 
   /* ── SQUARE: ENLACES DE PAGO (alternativa) ────
