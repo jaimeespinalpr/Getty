@@ -206,8 +206,10 @@
       <h2 class="section-title" data-i18n="mh.title">Un Pedacito de Puerto Rico Sobre Ruedas</h2>
       <p class="section-sub" data-i18n="mh.sub">Cada rincón del Ghetty fue pintado a mano: la bandera, el flamboyán, el coquí y hasta una cascada del Yunque en el baño. Esto no es un camper cualquiera — es una obra de arte boricua que también puedes rentar para quedarte.</p>
 
-      <div class="mh-gallery">
-        <figure class="mh-photo mh-photo--wide" data-emoji="🚐">
+      <div class="mh-carousel-wrap">
+       <div class="mh-carousel" id="mhCarousel" aria-roledescription="carrusel" aria-label="Galería del Motor-Home">
+        <div class="mh-carousel-track" id="mhCarouselTrack">
+        <figure class="mh-photo" data-emoji="🚐">
           <img src="assets/interior-1.jpg" alt="Vista panorámica del interior del Ghetty Motor-Home con murales de Puerto Rico" loading="lazy"/>
           <figcaption data-i18n="mh.cap1">Vista panorámica desde el loft: sala, cocina y arte por todas partes</figcaption>
         </figure>
@@ -243,6 +245,11 @@
           <img src="assets/interior-9.jpg" alt="Vista hacia la cabina con TV encendida" loading="lazy"/>
           <figcaption data-i18n="mh.cap9">Asientos de capitán y TV lista para el viaje</figcaption>
         </figure>
+        </div>
+        <button class="mh-carousel-btn mh-carousel-btn--prev" id="mhPrev" type="button" aria-label="Foto anterior">‹</button>
+        <button class="mh-carousel-btn mh-carousel-btn--next" id="mhNext" type="button" aria-label="Foto siguiente">›</button>
+       </div>
+       <div class="mh-carousel-dots" id="mhDots" role="tablist" aria-label="Seleccionar foto"></div>
       </div>
 
       <div class="mh-amenities">
