@@ -23,6 +23,14 @@
 //                                    ej. Ghetty Motor-Home <bookings@ghettypr.com>
 //    RESEND_REPLY_TO      (var, opcional)  inbox para respuestas
 //                                    (por defecto info@ghettypr.com)
+//    WHATSAPP_TOKEN          (secreto, opcional) token permanente de la
+//                                    WhatsApp Cloud API (Meta)
+//    WHATSAPP_PHONE_NUMBER_ID (var, opcional) ID del número emisor de WhatsApp
+//    WHATSAPP_TO             (var, opcional) número del dueño que recibe el
+//                                    aviso, formato internacional sin +, ej. 1787XXXXXXX
+//    WHATSAPP_TEMPLATE       (var, opcional) nombre de la plantilla aprobada
+//                                    (por defecto 'nueva_reserva')
+//    WHATSAPP_LANG           (var, opcional) idioma de la plantilla (por defecto 'es')
 // ══════════════════════════════════════════════
 
 // ⚠️ Mantener sincronizado con config.js (pricing)
@@ -210,6 +218,63 @@ async function sendReceiptEmail(env, { to, name, pkg, start, end, guests, total,
   }
 }
 
+/**
+ * Avisa al dueño por WhatsApp (Meta Cloud API) cuando entra una reserva.
+ * Usa una plantilla aprobada con 6 parámetros en el cuerpo, en este orden:
+ *   {{1}} paquete  {{2}} fecha(s)  {{3}} personas
+ *   {{4}} total    {{5}} cliente   {{6}} contacto
+ * Si falta alguna variable de entorno, no hace nada (devuelve false).
+ */
+async function sendWhatsAppNotification(env, { pkg, start, end, guests, total, name, contact }) {
+  if (!env.WHATSAPP_TOKEN || !env.WHATSAPP_PHONE_NUMBER_ID || !env.WHATSAPP_TO) return false;
+
+  const pkgNames = {
+    night: 'Renta por noche',
+    exp6h: 'Experiencia Tropical (6h)',
+    exp8h: 'Experiencia Isla Completa (8h)',
+  };
+  const dateText = pkg === 'night' ? `${start} → ${end}` : start;
+  const params = [
+    pkgNames[pkg] || pkg,
+    dateText,
+    String(guests),
+    `$${Number(total || 0).toFixed(2)} USD`,
+    String(name || '—').slice(0, 80),
+    String(contact || '—').slice(0, 60),
+  ].map(text => ({ type: 'text', text: text || '—' }));
+
+  try {
+    const res = await fetch(
+      `https://graph.facebook.com/v21.0/${env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${env.WHATSAPP_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to: env.WHATSAPP_TO,
+          type: 'template',
+          template: {
+            name: env.WHATSAPP_TEMPLATE || 'nueva_reserva',
+            language: { code: env.WHATSAPP_LANG || 'es' },
+            components: [{ type: 'body', parameters: params }],
+          },
+        }),
+      }
+    );
+    if (!res.ok) {
+      console.error('WhatsApp notif falló:', await res.text().catch(() => res.status));
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('WhatsApp notif error:', e.message);
+    return false;
+  }
+}
+
 /** Auto-diagnóstico: verifica el token contra Square SIN exponerlo. */
 async function healthCheck(env) {
   const out = {
@@ -342,6 +407,17 @@ export default {
       lang: lang || 'es',
     });
 
+    // Aviso al dueño por WhatsApp (no bloquea ni falla el pago si no está configurado)
+    const whatsappSent = await sendWhatsAppNotification(env, {
+      pkg,
+      start,
+      end,
+      guests: parseInt(guests, 10),
+      total: amount / 100,
+      name: String(name || '').slice(0, 80),
+      contact: contact || email || '',
+    });
+
     return json(env, {
       ok: true,
       paymentId: payData.payment.id,
@@ -349,6 +425,7 @@ export default {
       total: amount / 100,
       bookingRecorded,
       emailSent,
+      whatsappSent,
     });
   },
 };

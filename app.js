@@ -824,6 +824,30 @@ if (lightbox) {
 })();
 
 /* ─────────────────────────────────────────────
+   BOTÓN FLOTANTE DE WHATSAPP
+   Solo aparece si hay un número configurado en config.js
+───────────────────────────────────────────── */
+(function () {
+  const num = (window.GHETTY_CONFIG || {}).whatsappNumber;
+  if (!num) return;
+  const clean = String(num).replace(/[^\d]/g, '');
+  if (!clean) return;
+
+  const msg = currentLang === 'en'
+    ? '¡Hi! I\'m interested in the Ghetty Motor-Home 🚐'
+    : '¡Hola! Me interesa el Ghetty Motor-Home 🚐';
+
+  const a = document.createElement('a');
+  a.className = 'wa-float';
+  a.href = `https://wa.me/${clean}?text=${encodeURIComponent(msg)}`;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.setAttribute('aria-label', currentLang === 'en' ? 'Chat on WhatsApp' : 'Escríbenos por WhatsApp');
+  a.innerHTML = '<svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" fill="currentColor"><path d="M16.04 4C9.96 4 5 8.95 5 15.03c0 2.13.6 4.13 1.65 5.84L5 28l7.3-1.6a11 11 0 0 0 3.74.65h.01c6.08 0 11.03-4.95 11.04-11.03A11 11 0 0 0 16.04 4Zm6.46 15.6c-.27.77-1.6 1.5-2.2 1.56-.58.05-1.12.27-3.76-.78-3.18-1.25-5.2-4.5-5.36-4.71-.16-.21-1.28-1.7-1.28-3.24 0-1.55.8-2.3 1.1-2.62.28-.32.6-.4.8-.4.2 0 .4 0 .58.01.18.01.44-.07.68.52.27.64.92 2.2.99 2.36.07.16.12.35.01.56-.1.21-.16.35-.32.54-.16.18-.34.4-.48.54-.16.16-.33.34-.14.66.18.32.82 1.36 1.77 2.2 1.21 1.08 2.24 1.42 2.56 1.58.32.16.5.13.69-.08.19-.21.8-.93 1.01-1.25.21-.32.42-.27.7-.16.29.11 1.84.87 2.16 1.03.32.16.53.24.6.37.08.13.08.75-.19 1.52Z"/></svg>';
+  document.body.appendChild(a);
+})();
+
+/* ─────────────────────────────────────────────
    INIT
 ───────────────────────────────────────────── */
 // Apply saved / default language immediately
