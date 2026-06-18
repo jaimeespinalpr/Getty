@@ -228,6 +228,10 @@ async function sendReceiptEmail(env, { to, name, pkg, start, end, guests, total,
 async function sendWhatsAppNotification(env, { pkg, start, end, guests, total, name, contact }) {
   if (!env.WHATSAPP_TOKEN || !env.WHATSAPP_PHONE_NUMBER_ID || !env.WHATSAPP_TO) return false;
 
+  // Meta espera solo dígitos (sin +, espacios ni guiones)
+  const toNum = String(env.WHATSAPP_TO).replace(/[^\d]/g, '');
+  if (!toNum) return false;
+
   const pkgNames = {
     night: 'Renta por noche',
     exp6h: 'Experiencia Tropical (6h)',
@@ -243,6 +247,9 @@ async function sendWhatsAppNotification(env, { pkg, start, end, guests, total, n
     String(contact || '—').slice(0, 60),
   ].map(text => ({ type: 'text', text: text || '—' }));
 
+  // Timeout para no colgar el checkout si Meta responde lento o está caído
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
   try {
     const res = await fetch(
       `https://graph.facebook.com/v21.0/${env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
@@ -254,7 +261,7 @@ async function sendWhatsAppNotification(env, { pkg, start, end, guests, total, n
         },
         body: JSON.stringify({
           messaging_product: 'whatsapp',
-          to: env.WHATSAPP_TO,
+          to: toNum,
           type: 'template',
           template: {
             name: env.WHATSAPP_TEMPLATE || 'nueva_reserva',
@@ -262,6 +269,7 @@ async function sendWhatsAppNotification(env, { pkg, start, end, guests, total, n
             components: [{ type: 'body', parameters: params }],
           },
         }),
+        signal: controller.signal,
       }
     );
     if (!res.ok) {
@@ -272,6 +280,8 @@ async function sendWhatsAppNotification(env, { pkg, start, end, guests, total, n
   } catch (e) {
     console.error('WhatsApp notif error:', e.message);
     return false;
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
