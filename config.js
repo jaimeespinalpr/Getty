@@ -32,7 +32,8 @@ window.GHETTY_CONFIG = {
 
   /* ── PRECIOS ──────────────────────────────── */
   pricing: {
-    nightlyRate: 150,          // $ por noche (renta del motorhome)
+    nightlyRate: 120,          // $ por noche (renta del motorhome)
+    cleaningFee: 40,           // $ cargo de limpieza (1 sola vez por reservación de renta por noche)
     exp6h: { perPerson: 79,  group: 450 },
     exp8h: { perPerson: 100, group: 600 },
     maxGuests: 6,

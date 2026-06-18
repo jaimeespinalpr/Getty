@@ -27,7 +27,8 @@
 
 // ⚠️ Mantener sincronizado con config.js (pricing)
 const PRICING = {
-  nightlyRate: 150,
+  nightlyRate: 120,
+  cleaningFee: 40,
   exp6h: { perPerson: 79, group: 450 },
   exp8h: { perPerson: 100, group: 600 },
   maxGuests: 6,
@@ -48,7 +49,7 @@ export function computeAmountCents(pkg, start, end, guests) {
     if (!DATE_RE.test(end || '')) return null;
     const nights = nightsBetween(start, end);
     if (!Number.isInteger(nights) || nights < 1 || nights > 60) return null;
-    return nights * PRICING.nightlyRate * 100;
+    return (nights * PRICING.nightlyRate + PRICING.cleaningFee) * 100;
   }
   if (pkg === 'exp6h' || pkg === 'exp8h') {
     const p = PRICING[pkg];
@@ -168,6 +169,7 @@ async function sendReceiptEmail(env, { to, name, pkg, start, end, guests, total,
       <tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:12px 0 12px 32px;border-bottom:1px solid #f0f0f0;width:42%">${isEs ? 'Paquete' : 'Package'}</td><td style="font-weight:600;font-size:15px;text-align:right;padding:12px 32px 12px 0;border-bottom:1px solid #f0f0f0">${pkgLabel}</td></tr>
       ${dateRow}
       <tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:12px 0 12px 32px;border-bottom:1px solid #f0f0f0">${isEs ? 'Personas' : 'Guests'}</td><td style="font-weight:600;font-size:15px;text-align:right;padding:12px 32px 12px 0;border-bottom:1px solid #f0f0f0">${guests}</td></tr>
+      ${isNight ? `<tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:12px 0 12px 32px;border-bottom:1px solid #f0f0f0">${isEs ? 'Cargo de limpieza' : 'Cleaning fee'}</td><td style="font-weight:600;font-size:15px;text-align:right;padding:12px 32px 12px 0;border-bottom:1px solid #f0f0f0">$${PRICING.cleaningFee.toFixed(2)} USD</td></tr>` : ''}
       <tr><td style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:12px 0 12px 32px">${isEs ? 'Total cobrado' : 'Total charged'}</td><td style="font-weight:800;font-size:16px;text-align:right;padding:12px 32px 12px 0;color:#0a2342">$${(total || 0).toFixed(2)} USD</td></tr>
     </table>
   </td></tr>
