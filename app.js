@@ -742,6 +742,88 @@ if (lightbox) {
 }
 
 /* ─────────────────────────────────────────────
+   MOTOR-HOME CARRUSEL
+   • Avanza solo cuando la galería está visible
+   • Se detiene fuera de pantalla / pestaña inactiva
+     para no gastar memoria ni CPU
+───────────────────────────────────────────── */
+(function () {
+  const carousel = document.getElementById('mhCarousel');
+  const track    = document.getElementById('mhCarouselTrack');
+  const dotsWrap = document.getElementById('mhDots');
+  const prevBtn  = document.getElementById('mhPrev');
+  const nextBtn  = document.getElementById('mhNext');
+  if (!carousel || !track) return;
+
+  const slides = Array.from(track.children);
+  const count  = slides.length;
+  if (count === 0) return;
+
+  const INTERVAL = 4000;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let index = 0;
+  let timer = null;
+  let visible = false;
+
+  const dots = slides.map((_, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'mh-carousel-dot' + (i === 0 ? ' mh-carousel-dot--active' : '');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Foto ${i + 1} de ${count}`);
+    dot.addEventListener('click', () => { goTo(i); restart(); });
+    if (dotsWrap) dotsWrap.appendChild(dot);
+    return dot;
+  });
+
+  function update() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((d, i) => {
+      const on = i === index;
+      d.classList.toggle('mh-carousel-dot--active', on);
+      d.setAttribute('aria-selected', String(on));
+    });
+  }
+  function goTo(i) { index = (i + count) % count; update(); }
+  const next = () => goTo(index + 1);
+  const prev = () => goTo(index - 1);
+
+  function start() {
+    if (timer || reduceMotion) return;
+    timer = setInterval(next, INTERVAL);
+  }
+  function stop() {
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+  function restart() { stop(); if (visible && !document.hidden) start(); }
+
+  if (prevBtn) prevBtn.addEventListener('click', () => { prev(); restart(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { next(); restart(); });
+
+  // Pausa mientras el cursor está encima
+  carousel.addEventListener('mouseenter', stop);
+  carousel.addEventListener('mouseleave', () => { if (visible && !document.hidden) start(); });
+
+  // Solo corre cuando la galería está realmente en pantalla
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible && !document.hidden) start(); else stop();
+    }, { threshold: 0.35 }).observe(carousel);
+  } else {
+    visible = true;
+    start();
+  }
+
+  // Pausa cuando la pestaña no está activa
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop(); else if (visible) start();
+  });
+
+  update();
+})();
+
+/* ─────────────────────────────────────────────
    INIT
 ───────────────────────────────────────────── */
 // Apply saved / default language immediately
