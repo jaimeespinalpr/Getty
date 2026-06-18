@@ -48,5 +48,5 @@ window.GHETTY_CONFIG = {
 
   /* ── CONTACTO ─────────────────────────────── */
   instagramUrl: 'https://www.instagram.com/ghettymotorhome/',
-  whatsappNumber: '',          // ej: '17871234567' (con código de país, sin +)
+  whatsappNumber: '17873988784',          // ej: '17871234567' (con código de país, sin +)
 };

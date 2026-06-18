@@ -1484,3 +1484,29 @@ body.lang-transition * {
 }
 .btn-book:disabled { opacity: 0.6; cursor: wait; }
 .bk-modal-card p a { color: var(--sea); font-weight: 700; }
+
+/* ── BOTÓN FLOTANTE DE WHATSAPP ── */
+.wa-float {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1500;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.wa-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.32);
+}
+.wa-float:active { transform: scale(0.97); }
+@media (max-width: 640px) {
+  .wa-float { right: 14px; bottom: 14px; width: 52px; height: 52px; }
+}
