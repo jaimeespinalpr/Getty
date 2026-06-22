@@ -307,7 +307,11 @@
 
   /* ── Pago integrado (Square Web Payments SDK + Worker) ── */
   const sq = cfg.square || {};
-  const embeddedEnabled = !!(sq.applicationId && sq.locationId && sq.paymentApiUrl);
+  const squareEnvironment = sq.activeEnvironment || sq.environment || 'sandbox';
+  const squareConfig = sq.environments?.[squareEnvironment]
+    ? { ...sq.environments[squareEnvironment], environment: squareEnvironment, paymentApiUrl: sq.paymentApiUrl }
+    : sq;
+  const embeddedEnabled = !!(squareConfig.applicationId && squareConfig.locationId && squareConfig.paymentApiUrl);
   const cardGroup = document.getElementById('cardGroup');
   const cardError = document.getElementById('cardError');
   const submitBtn = document.getElementById('bkSubmit');
@@ -324,11 +328,11 @@
   }
 
   async function initSquareCard() {
-    const src = sq.environment === 'production'
+    const src = squareConfig.environment === 'production'
       ? 'https://web.squarecdn.com/v1/square.js'
       : 'https://sandbox.web.squarecdn.com/v1/square.js';
     await loadScript(src);
-    const payments = window.Square.payments(sq.applicationId, sq.locationId);
+    const payments = window.Square.payments(squareConfig.applicationId, squareConfig.locationId);
     card = await payments.card();
     await card.attach('#card-container');
     cardGroup.hidden = false;
@@ -356,7 +360,7 @@
         showCardError(tok.errors?.[0]?.message || T().payErrCard);
         return;
       }
-      const res = await fetch(sq.paymentApiUrl, {
+      const res = await fetch(squareConfig.paymentApiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
