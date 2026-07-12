@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Fetch the latest Instagram posts for the website.
 
-Uses Meta's current Instagram API with Instagram Login flow:
-1. Resolve the professional Instagram account with ``/me``.
-2. Fetch media from ``/<IG_ID>/media``.
+Supports both current Meta authentication flows:
+- Instagram Login: resolve ``/me`` on graph.instagram.com.
+- Facebook Login: discover the connected professional account through
+  ``/me/accounts`` on graph.facebook.com.
 
 Required environment variable:
     INSTAGRAM_ACCESS_TOKEN
@@ -25,7 +26,8 @@ import requests
 
 OUTPUT_FILE = Path("posts.json")
 LIMIT = 5
-API_BASE = "https://graph.instagram.com"
+INSTAGRAM_API_BASE = "https://graph.instagram.com"
+FACEBOOK_API_BASE = "https://graph.facebook.com"
 API_VERSION = os.environ.get("INSTAGRAM_API_VERSION", "v25.0").strip() or "v25.0"
 ACCOUNT_FIELDS = "user_id,username"
 MEDIA_FIELDS = "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp"
@@ -49,8 +51,14 @@ def normalize_token(raw_token: str) -> str:
     return token
 
 
-def _request_json(path: str, token: str, **params: Any) -> dict[str, Any]:
-    url = f"{API_BASE}/{API_VERSION}/{path.lstrip('/')}"
+def _request_json(
+    path: str,
+    token: str,
+    *,
+    api_base: str = INSTAGRAM_API_BASE,
+    **params: Any,
+) -> dict[str, Any]:
+    url = f"{api_base}/{API_VERSION}/{path.lstrip('/')}"
     query = {**params, "access_token": token}
 
     try:
@@ -98,11 +106,51 @@ def get_account(token: str) -> tuple[str, str]:
     return user_id, username
 
 
+def get_facebook_connected_account(token: str) -> tuple[str, str, str]:
+    """Discover an Instagram professional account connected to a managed Page."""
+    payload = _request_json(
+        "me/accounts",
+        token,
+        api_base=FACEBOOK_API_BASE,
+        fields="id,name,access_token,instagram_business_account{id,username}",
+        limit=100,
+    )
+    pages = payload.get("data", [])
+    if not isinstance(pages, list):
+        pages = []
+
+    for page in pages:
+        if not isinstance(page, dict):
+            continue
+        instagram_account = page.get("instagram_business_account")
+        if not isinstance(instagram_account, dict):
+            continue
+        user_id = str(instagram_account.get("id") or "").strip()
+        username = str(instagram_account.get("username") or "").strip()
+        page_token = str(page.get("access_token") or token).strip()
+        if user_id:
+            return user_id, username, page_token
+
+    raise InstagramAPIError(
+        "The Facebook token is valid, but no connected Instagram Professional "
+        "account was found. Confirm that the Instagram account is linked to a "
+        "Facebook Page and grant pages_show_list and instagram_basic permissions."
+    )
+
+
 def fetch_posts(token: str) -> tuple[list[dict[str, Any]], str]:
-    user_id, username = get_account(token)
+    if token.upper().startswith("EAA"):
+        user_id, username, media_token = get_facebook_connected_account(token)
+        api_base = FACEBOOK_API_BASE
+    else:
+        user_id, username = get_account(token)
+        media_token = token
+        api_base = INSTAGRAM_API_BASE
+
     payload = _request_json(
         f"{user_id}/media",
-        token,
+        media_token,
+        api_base=api_base,
         fields=MEDIA_FIELDS,
         limit=LIMIT,
     )

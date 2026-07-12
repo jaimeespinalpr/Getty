@@ -58,6 +58,50 @@ class InstagramAPITests(unittest.TestCase):
         )
 
     @patch("fetch_posts.requests.get")
+    def test_fetches_facebook_connected_instagram_account(self, mock_get):
+        pages_response = Mock(ok=True)
+        pages_response.json.return_value = {
+            "data": [
+                {
+                    "id": "page-1",
+                    "access_token": "page-token",
+                    "instagram_business_account": {
+                        "id": "17841400000000000",
+                        "username": "ghettymotorhome",
+                    },
+                }
+            ]
+        }
+        media_response = Mock(ok=True)
+        media_response.json.return_value = {
+            "data": [
+                {
+                    "id": "1",
+                    "media_type": "IMAGE",
+                    "media_url": "https://cdn.example/post.jpg",
+                    "permalink": "https://www.instagram.com/p/example/",
+                }
+            ]
+        }
+        mock_get.side_effect = [pages_response, media_response]
+
+        posts, username = fetch_posts.fetch_posts("EAA-facebook-user-token")
+
+        self.assertEqual(username, "ghettymotorhome")
+        self.assertEqual(len(posts), 1)
+        self.assertIn("graph.facebook.com", mock_get.call_args_list[0].args[0])
+        self.assertTrue(mock_get.call_args_list[0].args[0].endswith("/v25.0/me/accounts"))
+        self.assertTrue(
+            mock_get.call_args_list[1].args[0].endswith(
+                "/v25.0/17841400000000000/media"
+            )
+        )
+        self.assertEqual(
+            mock_get.call_args_list[1].kwargs["params"]["access_token"],
+            "page-token",
+        )
+
+    @patch("fetch_posts.requests.get")
     def test_api_error_does_not_leak_token_or_request_url(self, mock_get):
         response = Mock(ok=False, status_code=400)
         response.json.return_value = {
