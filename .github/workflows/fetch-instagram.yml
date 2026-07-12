@@ -1,9 +1,10 @@
-name: 🔄 Update Instagram Posts Daily
+name: 🔄 Update Instagram Posts 2x Daily
 
 on:
   schedule:
-    # Runs every day at 6:00 AM UTC (2:00 AM Puerto Rico time)
-    - cron: '0 6 * * *'
+    # Runs at 8:00 AM and 8:00 PM Puerto Rico time (UTC-4)
+    - cron: '0 12 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch: # Allow manual trigger from GitHub UI
 
 jobs:

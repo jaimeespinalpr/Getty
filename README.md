@@ -117,7 +117,9 @@ Las fotos del interior ya están en `assets/` con estos nombres (si cambias algu
 
 ### Bonus: Posts de Instagram automáticos
 
-El workflow **🔄 Update Instagram Posts Daily** ya existe: configura el secreto `INSTAGRAM_ACCESS_TOKEN` (ver instrucciones dentro de `fetch_posts.py`) y el carrusel mostrará los últimos posts reales de [@ghettymotorhome](https://www.instagram.com/ghettymotorhome).
+El workflow **🔄 Update Instagram Posts 2x Daily** ya existe: configura el secreto `INSTAGRAM_ACCESS_TOKEN` (ver instrucciones dentro de `fetch_posts.py`) y el carrusel mostrará los últimos posts reales de [@ghettymotorhome](https://www.instagram.com/ghettymotorhome).
+
+> Nota: el workflow ahora puede ejecutarse a las **8:00 AM** y **8:00 PM** hora de Puerto Rico (UTC-4) para refrescar los posts dos veces al día.
 
 ---
 
