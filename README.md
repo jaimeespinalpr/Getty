@@ -117,9 +117,17 @@ Las fotos del interior ya están en `assets/` con estos nombres (si cambias algu
 
 ### Bonus: Posts de Instagram automáticos
 
-El workflow **🔄 Update Instagram Posts 2x Daily** ya existe: configura el secreto `INSTAGRAM_ACCESS_TOKEN` (ver instrucciones dentro de `fetch_posts.py`) y el carrusel mostrará los últimos posts reales de [@ghettymotorhome](https://www.instagram.com/ghettymotorhome).
+El workflow **🔄 Update Instagram Posts 2x Daily** usa la API oficial **Instagram API with Instagram Login** y actualiza el carrusel con los últimos posts reales de [@ghettymotorhome](https://www.instagram.com/ghettymotorhome).
 
-> Nota: el workflow ahora puede ejecutarse a las **8:00 AM** y **8:00 PM** hora de Puerto Rico (UTC-4) para refrescar los posts dos veces al día.
+1. La cuenta conectada debe ser **Professional** (`Business` o `Creator`).
+2. En Meta for Developers abre una app de tipo **Business** → **Instagram** → **API setup with Instagram business login**.
+3. Genera el token para `@ghettymotorhome` y copia **solo el valor del token**, sin `Bearer`, comillas ni `INSTAGRAM_ACCESS_TOKEN=`.
+4. Guarda el valor en GitHub → **Settings → Secrets and variables → Actions** como `INSTAGRAM_ACCESS_TOKEN`.
+5. Ejecuta manualmente **🔄 Update Instagram Posts 2x Daily** para validarlo.
+
+El workflow consulta primero `/v25.0/me` para resolver el `user_id` y después `/<IG_ID>/media`. Si Meta rechaza el token, el job falla claramente y conserva el último `posts.json` válido en vez de reemplazarlo con un feed vacío.
+
+> Se ejecuta a las **8:00 AM** y **8:00 PM** hora de Puerto Rico (UTC-4). Los tokens generados desde el App Dashboard suelen tener vigencia limitada; cuando Meta los expire hay que generar uno nuevo y actualizar el secreto.
 
 ---
 
@@ -135,4 +143,4 @@ El workflow **🔄 Update Instagram Posts 2x Daily** ya existe: configura el sec
 | `ghetty-web-bookings.ics` | iCal exportado para importar en Airbnb (generado automáticamente) |
 | `sync_calendar.py` | Script de sincronización Airbnb ⇄ web |
 | `.github/workflows/sync-calendar.yml` | Corre la sincronización cada 3 horas |
-| `fetch_posts.py` + workflow | Trae los últimos posts de Instagram a diario |
+| `fetch_posts.py` + workflow | Trae los últimos posts de Instagram 2 veces al día |
