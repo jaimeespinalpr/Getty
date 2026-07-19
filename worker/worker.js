@@ -1,3 +1,13 @@
+import {
+  authenticateUser,
+  attachProviderPayment,
+  confirmPromotionPaid,
+  expirePromotions,
+  promotionConfigured,
+  releasePromotion,
+  reservePromotion,
+} from './promotion.js';
+
 // ══════════════════════════════════════════════
 //  Ghetty Motor-Home — worker.js (Cloudflare Worker)
 //
@@ -70,7 +80,7 @@ function cors(env) {
   return {
     'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
 }
 
@@ -79,6 +89,58 @@ function json(env, body, status = 200) {
     status,
     headers: { 'Content-Type': 'application/json', ...cors(env) },
   });
+}
+
+function bytesToBase64(bytes) {
+  let binary = '';
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary);
+}
+
+/** Verifica la firma HMAC-SHA256 oficial de webhooks de Square. */
+async function verifySquareWebhook(env, rawBody, signature) {
+  if (!env.SQUARE_WEBHOOK_SIGNATURE_KEY || !env.SQUARE_WEBHOOK_URL || !signature) return false;
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(env.SQUARE_WEBHOOK_SIGNATURE_KEY),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const signed = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    new TextEncoder().encode(env.SQUARE_WEBHOOK_URL + rawBody)
+  );
+  const expected = bytesToBase64(new Uint8Array(signed));
+  if (expected.length !== signature.length) return false;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ signature.charCodeAt(i);
+  return diff === 0;
+}
+
+async function handleSquareWebhook(request, env) {
+  const rawBody = await request.text();
+  const signature = request.headers.get('x-square-hmacsha256-signature') || '';
+  if (!(await verifySquareWebhook(env, rawBody, signature))) {
+    return json(env, { error: 'invalid_webhook_signature' }, 401);
+  }
+  let event;
+  try { event = JSON.parse(rawBody); } catch { return json(env, { error: 'invalid_json' }, 400); }
+  const payment = event?.data?.object?.payment;
+  if (event?.type === 'payment.updated' && payment?.id && payment?.status === 'COMPLETED') {
+    try {
+      if (payment.reference_id) {
+        await attachProviderPayment(env, payment.reference_id, payment.id).catch((error) => {
+          if (!String(error.message).includes('checkout_not_reservable')) throw error;
+        });
+      }
+      await confirmPromotionPaid(env, 'square', payment.id);
+    } catch (error) {
+      if (!String(error.message).includes('checkout_not_found')) throw error;
+    }
+  }
+  return json(env, { ok: true });
 }
 
 /** Rechaza el pago si alguna noche del rango ya está ocupada. */
@@ -324,11 +386,23 @@ async function healthCheck(env) {
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: cors(env) });
     }
-    if (request.method === 'GET' && new URL(request.url).pathname === '/health') {
-      return json(env, await healthCheck(env));
+    if (request.method === 'POST' && url.pathname === '/webhooks/square') {
+      return handleSquareWebhook(request, env);
+    }
+    if (request.method === 'POST' && url.pathname === '/maintenance/expire-promotions') {
+      if (!env.MAINTENANCE_SECRET || request.headers.get('Authorization') !== `Bearer ${env.MAINTENANCE_SECRET}`) {
+        return json(env, { error: 'unauthorized' }, 401);
+      }
+      return json(env, { ok: true, expired: await expirePromotions(env) });
+    }
+    if (request.method === 'GET' && url.pathname === '/health') {
+      const health = await healthCheck(env);
+      health.promotionConfigured = promotionConfigured(env);
+      return json(env, health);
     }
     if (request.method !== 'POST') {
       return json(env, { error: 'method_not_allowed' }, 405);
@@ -353,6 +427,25 @@ export default {
       return json(env, { error: 'dates_unavailable' }, 409);
     }
 
+    // El subtotal se calcula arriba exclusivamente en el servidor. Si hay una
+    // sesión Supabase válida, la base de datos reserva el beneficio con bloqueo
+    // de fila; dos checkouts simultáneos no pueden obtener el mismo descuento.
+    const user = await authenticateUser(env, request.headers.get('Authorization'));
+    const checkoutId = crypto.randomUUID();
+    let promotion;
+    try {
+      promotion = await reservePromotion(env, {
+        userId: user?.id || null,
+        checkoutId,
+        subtotalCents: amount,
+        provider: 'square',
+      });
+    } catch (error) {
+      console.error('No se pudo reservar el beneficio:', error.message);
+      return json(env, { error: 'promotion_reservation_failed' }, 503);
+    }
+    const chargeAmount = promotion.totalCents;
+
     const base = env.SQUARE_ENV === 'production'
       ? 'https://connect.squareup.com'
       : 'https://connect.squareupsandbox.com';
@@ -368,9 +461,10 @@ export default {
       },
       body: JSON.stringify({
         source_id: sourceId,
-        idempotency_key: crypto.randomUUID(),
-        amount_money: { amount, currency: 'USD' },
+        idempotency_key: promotion.checkoutId || checkoutId,
+        amount_money: { amount: chargeAmount, currency: 'USD' },
         location_id: env.SQUARE_LOCATION_ID,
+        reference_id: promotion.checkoutId || undefined,
         note: note.slice(0, 500),
       }),
     });
@@ -378,7 +472,25 @@ export default {
     const payData = await payRes.json().catch(() => ({}));
     if (!payRes.ok || !payData.payment) {
       const detail = payData.errors?.[0]?.code || `http_${payRes.status}`;
+      // Square no creó el pago: liberar el beneficio inmediatamente.
+      await releasePromotion(env, promotion.checkoutId, 'failed').catch((e) =>
+        console.error('No se pudo liberar el beneficio:', e.message)
+      );
       return json(env, { error: 'payment_failed', detail }, 402);
+    }
+
+    // Vincula el pago al checkout. Si Square devuelve COMPLETED en esta
+    // respuesta autenticada servidor-a-servidor, confirma el beneficio aquí.
+    // El webhook firmado conserva el mismo comportamiento como respaldo.
+    if (promotion.checkoutId) {
+      try {
+        await attachProviderPayment(env, promotion.checkoutId, payData.payment.id);
+        if (payData.payment.status === 'COMPLETED') {
+          await confirmPromotionPaid(env, 'square', payData.payment.id);
+        }
+      } catch (error) {
+        console.error('No se pudo actualizar el beneficio después del pago:', error.message);
+      }
     }
 
     // Registrar la reserva para bloquear fechas (web + Airbnb)
@@ -411,7 +523,7 @@ export default {
       start,
       end,
       guests: parseInt(guests, 10),
-      total: amount / 100,
+      total: chargeAmount / 100,
       paymentId: payData.payment.id,
       receiptUrl,
       lang: lang || 'es',
@@ -423,7 +535,7 @@ export default {
       start,
       end,
       guests: parseInt(guests, 10),
-      total: amount / 100,
+      total: chargeAmount / 100,
       name: String(name || '').slice(0, 80),
       contact: contact || email || '',
     });
@@ -432,10 +544,21 @@ export default {
       ok: true,
       paymentId: payData.payment.id,
       receiptUrl,
-      total: amount / 100,
+      total: chargeAmount / 100,
+      subtotal: promotion.subtotalCents / 100,
+      discount: promotion.discountCents / 100,
+      benefitReserved: promotion.discountCents > 0,
       bookingRecorded,
       emailSent,
       whatsappSent,
     });
+  },
+
+  async scheduled(_controller, env, ctx) {
+    ctx.waitUntil(
+      expirePromotions(env).catch((error) =>
+        console.error('No se pudieron expirar promociones:', error.message)
+      )
+    );
   },
 };

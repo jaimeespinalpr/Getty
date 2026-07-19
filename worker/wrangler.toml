@@ -7,6 +7,14 @@ compatibility_date = "2026-01-01"
 # las borre.
 keep_vars = true
 
+# Expira automáticamente beneficios reservados en checkouts abandonados.
+[triggers]
+crons = ["*/5 * * * *"]
+
+# Secretos requeridos para la promoción (usar `wrangler secret put`):
+# SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY,
+# SQUARE_WEBHOOK_SIGNATURE_KEY, SQUARE_WEBHOOK_URL, MAINTENANCE_SECRET.
+
 [vars]
 SQUARE_ENV = "sandbox"
 ALLOWED_ORIGIN = "*"

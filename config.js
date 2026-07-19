@@ -27,6 +27,14 @@ window.GHETTY_CONFIG = {
     },
   },
 
+  /* ── SUPABASE: CUENTAS + BENEFICIO DE BIENVENIDA ──
+     URL y anon key son valores públicos diseñados para el navegador.
+     NUNCA coloques aquí SUPABASE_SERVICE_ROLE_KEY. */
+  supabase: {
+    url: 'https://rivdijkemyvdbevrefcf.supabase.co',
+    anonKey: 'sb_publishable_kflGWe5lZy7RVm4y5kFlUQ_Qc0MQgE9',
+  },
+
   /* ── SQUARE: ENLACES DE PAGO (alternativa) ────
      Si no quieres usar el pago integrado, crea
      "Payment Links" en tu Square Dashboard y pega

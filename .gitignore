@@ -1,2 +1,12 @@
 __pycache__/
 *.pyc
+
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+*.local
+worker/.dev.vars
+worker/.wrangler/
+.supabase/
+supabase/.temp/

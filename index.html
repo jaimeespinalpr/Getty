@@ -375,6 +375,61 @@
     </div>
   </section>
 
+  <!-- ── WELCOME PROMOTION / ACCOUNT ── -->
+  <section id="promocion" class="section promo-section">
+    <div class="container">
+      <div class="promo-card">
+        <div class="promo-copy">
+          <div class="section-tag">PROMOCIÓN</div>
+          <h2>Crea una cuenta y recibe <strong>$5 de descuento</strong> en tu primer alquiler.</h2>
+          <p>Se aplica automáticamente al pagar. Una sola vez por cuenta y sin códigos.</p>
+          <ul class="promo-rules">
+            <li>✓ Cuenta autenticada</li>
+            <li>✓ Subtotal mínimo de $5</li>
+            <li>✓ Validado de forma segura en el servidor</li>
+          </ul>
+        </div>
+        <form id="accountForm" class="promo-form" novalidate>
+          <div id="accountSignedOut">
+            <div class="promo-tabs" role="tablist">
+              <button type="button" class="promo-tab active" data-auth-mode="signup">Crear cuenta</button>
+              <button type="button" class="promo-tab" data-auth-mode="login">Iniciar sesión</button>
+            </div>
+            <div class="form-group" id="accountNameGroup">
+              <label for="accountName">Nombre completo</label>
+              <input id="accountName" type="text" autocomplete="name"/>
+            </div>
+            <div class="form-group">
+              <label for="accountEmail">Correo electrónico</label>
+              <input id="accountEmail" type="email" autocomplete="email" required/>
+            </div>
+            <div class="form-group">
+              <label for="accountPassword">Contraseña</label>
+              <input id="accountPassword" type="password" autocomplete="new-password" minlength="8" required/>
+            </div>
+            <div class="form-group" id="accountPhoneGroup">
+              <label for="accountPhone">Teléfono móvil (opcional)</label>
+              <input id="accountPhone" type="tel" autocomplete="tel" placeholder="+17870000000"/>
+            </div>
+            <div id="accountConsents">
+              <label class="promo-check"><input id="consentEmail" type="checkbox"/> Quiero recibir promociones por email.</label>
+              <label class="promo-check"><input id="consentSms" type="checkbox"/> Quiero recibir promociones por SMS.</label>
+              <p class="promo-legal">Crear una cuenta no te suscribe automáticamente. Puedes retirar cada consentimiento cuando quieras. Pueden aplicar tarifas de mensajes.</p>
+            </div>
+            <button id="accountSubmit" class="btn-primary" type="submit">Crear mi cuenta</button>
+          </div>
+          <div id="accountSignedIn" hidden>
+            <div class="promo-success">✓ Cuenta activa</div>
+            <p id="accountIdentity"></p>
+            <p><strong>Tu descuento elegible se aplicará automáticamente durante el checkout.</strong></p>
+            <button id="accountLogout" class="btn-ghost" type="button">Cerrar sesión</button>
+          </div>
+          <p id="accountStatus" class="booking-hint" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- ── BOOKING ── -->
   <section id="reservar" class="section">
     <div class="container">
@@ -669,6 +724,8 @@
   </footer>
 
   <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
   <script src="app.js"></script>
   <script src="booking.js"></script>
 </body>

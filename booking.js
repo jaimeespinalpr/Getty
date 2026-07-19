@@ -76,7 +76,7 @@
       paidClose: 'Cerrar',
       paidEmailSent: email => `📧 Recibo enviado a ${email}`,
       paidEmailCheck: '📧 Revisa tu correo para el recibo.',
-      paidRows: { pkg: 'Paquete', checkin: 'Llegada', checkout: 'Salida', date: 'Fecha', guests: 'Personas', cleaningFee: 'Cargo de limpieza', total: 'Total cobrado' },
+      paidRows: { pkg: 'Paquete', checkin: 'Llegada', checkout: 'Salida', date: 'Fecha', guests: 'Personas', cleaningFee: 'Cargo de limpieza', subtotal: 'Subtotal', discount: 'Descuento de bienvenida', total: 'Total cobrado' },
       payErrCard: 'No se pudo procesar la tarjeta. Revisa los datos e intenta de nuevo.',
       payErrDates: 'Esas fechas se acaban de ocupar. Escoge otras fechas.',
       payErrNetwork: 'No se pudo conectar con el sistema de pagos. Intenta de nuevo en un momento.',
@@ -102,7 +102,7 @@
       paidClose: 'Close',
       paidEmailSent: email => `📧 Receipt sent to ${email}`,
       paidEmailCheck: '📧 Check your email for the receipt.',
-      paidRows: { pkg: 'Package', checkin: 'Check-in', checkout: 'Check-out', date: 'Date', guests: 'Guests', cleaningFee: 'Cleaning fee', total: 'Total charged' },
+      paidRows: { pkg: 'Package', checkin: 'Check-in', checkout: 'Check-out', date: 'Date', guests: 'Guests', cleaningFee: 'Cleaning fee', subtotal: 'Subtotal', discount: 'Welcome discount', total: 'Total charged' },
       payErrCard: 'The card could not be processed. Check the details and try again.',
       payErrDates: 'Those dates were just booked. Please pick different dates.',
       payErrNetwork: 'Could not reach the payment system. Please try again in a moment.',
@@ -362,7 +362,12 @@
       }
       const res = await fetch(squareConfig.paymentApiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(window.ghettyAuth?.getAccessToken()
+            ? { Authorization: `Bearer ${window.ghettyAuth.getAccessToken()}` }
+            : {}),
+        },
         body: JSON.stringify({
           sourceId: tok.token,
           package: pkgSelect.value,
@@ -398,6 +403,8 @@
         pkgSelect.value === 'night' ? [rows.checkout, selEnd] : null,
         [rows.guests, guestsEl.value],
         pkgSelect.value === 'night' ? [rows.cleaningFee, `$${pricing.cleaningFee.toFixed(2)} USD`] : null,
+        data.discount > 0 ? [rows.subtotal, `$${Number(data.subtotal).toFixed(2)} USD`] : null,
+        data.discount > 0 ? [rows.discount, `−$${Number(data.discount).toFixed(2)} USD`] : null,
         [rows.total, `$${(data.total || (calc ? calc.total : 0)).toFixed(2)} USD`],
       ].filter(Boolean);
 
