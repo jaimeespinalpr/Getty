@@ -408,9 +408,17 @@
         [rows.total, `$${(data.total || (calc ? calc.total : 0)).toFixed(2)} USD`],
       ].filter(Boolean);
 
-      bkReceiptRows.innerHTML = rowData.map(([k, v]) =>
-        `<tr><td class="bk-rt-label">${k}</td><td class="bk-rt-value">${v}</td></tr>`
-      ).join('');
+      bkReceiptRows.replaceChildren(...rowData.map(([label, value]) => {
+        const row = document.createElement('tr');
+        const labelCell = document.createElement('td');
+        const valueCell = document.createElement('td');
+        labelCell.className = 'bk-rt-label';
+        valueCell.className = 'bk-rt-value';
+        labelCell.textContent = String(label);
+        valueCell.textContent = String(value);
+        row.append(labelCell, valueCell);
+        return row;
+      }));
 
       bkReceiptId.textContent = data.paymentId || '';
       document.getElementById('bkReceiptIdLabel').textContent = lang() === 'es' ? 'N.º de confirmación' : 'Confirmation #';

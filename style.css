@@ -1544,3 +1544,9 @@ body.lang-transition * {
   .promo-card { padding: 22px 16px; border-radius: 20px; }
   .promo-form { padding: 18px 14px; }
 }
+
+/* Modern image source wrappers */
+.mh-photo picture { display: contents; }
+.price-detail { display: block; margin-top: .25rem; opacity: .8; }
+:focus-visible { outline: 3px solid #F4A261; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

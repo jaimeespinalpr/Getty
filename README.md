@@ -9,8 +9,15 @@ Sitio web para rentar el Ghetty Motor-Home y reservar experiencias de playa en P
 - 📖 Sección "Nuestra Historia"
 - 📸 Carrusel automático con los últimos posts de Instagram
 - 🇵🇷/🇺🇸 Bilingüe (Español / Inglés)
+- 🖼️ Imágenes WebP con fallback a originales, carga diferida en galerías y CTA separados para cada tipo de reserva
+- ♿ Mejoras de accesibilidad: foco visible, soporte para movimiento reducido y estado del menú móvil
+- 🛡️ Renderizado seguro de captions de Instagram y recibos mediante nodos DOM/texto
 
 ---
+
+## Verificación local
+
+Desde `worker/`, ejecuta `npm test` para validar reglas de precios, límites de fechas/personas y las pruebas de promociones. `npm run check` comprueba la sintaxis del Worker. Desde la raíz, ejecuta `python3 -m unittest discover -s tests -v` para las pruebas del feed de Instagram.
 
 ## ⚙️ Configuración (3 pasos)
 

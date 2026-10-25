@@ -87,7 +87,7 @@
 <body>
 
   <!-- ── NAV ── -->
-  <nav id="navbar">
+  <nav id="navbar" aria-label="Navegación principal">
     <div class="nav-inner">
       <img src="assets/logo.png" alt="Ghetty Motor-Home logo" class="nav-logo" width="56" height="56"/>
       <span class="nav-brand">Ghetty Motor-Home</span>
@@ -110,7 +110,7 @@
           <span class="lang-code">EN</span>
         </button>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false" type="button">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -128,7 +128,9 @@
   <section id="hero">
     <div class="hero-bg">
       <picture>
+        <source media="(max-width: 768px)" srcset="assets/beach_hero_mobile.webp" type="image/webp"/>
         <source media="(max-width: 768px)" srcset="assets/beach_hero_mobile.png" width="1024" height="1024"/>
+        <source srcset="assets/beach_hero.webp" type="image/webp"/>
         <img src="assets/beach_hero.png" alt="Playa de Puerto Rico" fetchpriority="high" width="1024" height="576" class="hero-img"/>
       </picture>
       <div class="hero-overlay"></div>
@@ -138,11 +140,11 @@
       <h1 data-i18n-html="hero.title">La Playa,<br/><em>A Tu Manera</em></h1>
       <p class="hero-sub" data-i18n-html="hero.sub">Experiencias privadas en el camper temático más chévere de la isla.<br/>Hasta 6 personas · Playas espectaculares · Ambiente 100% local</p>
       <div class="hero-cta-group">
-        <a href="#reservar" class="btn-primary" id="hero-reserve-btn">
+        <a href="#reservar" class="btn-primary" id="hero-reserve-btn" data-package="exp6h">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-          <span data-i18n="hero.cta">Reservar Ahora</span>
+          <span data-i18n="hero.cta">Reservar experiencia de playa</span>
         </a>
-        <a href="#precios" class="btn-ghost" data-i18n="hero.ctaGhost">Ver Precios</a>
+        <a href="#reservar" class="btn-ghost" data-package="night" data-i18n="hero.ctaRental">Rentar motorhome por noche</a>
       </div>
       <div class="hero-stats">
         <div class="stat"><span class="stat-num">6</span><span class="stat-label" data-i18n="hero.stat1">Personas máx.</span></div>
@@ -210,59 +212,59 @@
        <div class="mh-carousel" id="mhCarousel" aria-roledescription="carrusel" aria-label="Galería del Motor-Home">
         <div class="mh-carousel-track" id="mhCarouselTrack">
         <figure class="mh-photo" data-emoji="🚐">
-          <img src="assets/interior-1.jpg" alt="Vista panorámica del interior del Ghetty Motor-Home con murales de Puerto Rico" loading="lazy"/>
+          <picture><source srcset="assets/interior-1.webp" type="image/webp"/><img src="assets/interior-1.jpg" alt="Vista panorámica del interior del Ghetty Motor-Home con murales de Puerto Rico" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap1">Vista panorámica desde el loft: sala, cocina y arte por todas partes</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🇵🇷">
-          <img src="assets/interior-2.jpg" alt="Mural de la bandera de Puerto Rico en la sala del motorhome" loading="lazy"/>
+          <picture><source srcset="assets/interior-2.webp" type="image/webp"/><img src="assets/interior-2.jpg" alt="Mural de la bandera de Puerto Rico en la sala del motorhome" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap2">La bandera de Puerto Rico te recibe en la sala</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🛋️">
-          <img src="assets/interior-3.jpg" alt="Sofá-cama y cocina equipada del Ghetty Motor-Home" loading="lazy"/>
+          <picture><source srcset="assets/interior-3.webp" type="image/webp"/><img src="assets/interior-3.jpg" alt="Sofá-cama y cocina equipada del Ghetty Motor-Home" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap3">Sofá-cama, techo de madera y cocina completamente equipada</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🚿">
-          <img src="assets/interior-4.jpg" alt="Baño privado con mural de cascada inspirado en El Yunque" loading="lazy"/>
+          <picture><source srcset="assets/interior-4.webp" type="image/webp"/><img src="assets/interior-4.jpg" alt="Baño privado con mural de cascada inspirado en El Yunque" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap4">Baño privado con bañera y mural de cascada estilo El Yunque</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="📺">
-          <img src="assets/interior-5.jpg" alt="Zona de cine con TV y mural De aquí como el coquí" loading="lazy"/>
+          <picture><source srcset="assets/interior-5.webp" type="image/webp"/><img src="assets/interior-5.jpg" alt="Zona de cine con TV y mural De aquí como el coquí" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap5">«De aquí como el coquí» — zona de cine con TV y streaming</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🍳">
-          <img src="assets/interior-6.jpg" alt="Cocina con fregadero, estufa y aire acondicionado rodeada de murales tropicales" loading="lazy"/>
+          <picture><source srcset="assets/interior-6.webp" type="image/webp"/><img src="assets/interior-6.jpg" alt="Cocina con fregadero, estufa y aire acondicionado rodeada de murales tropicales" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap6">Cocina con fregadero, estufa y A/C entre hojas de plátano pintadas a mano</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🛁">
-          <img src="assets/interior-7.jpg" alt="Ducha con bañera y paneles de pared 3D" loading="lazy"/>
+          <picture><source srcset="assets/interior-7.webp" type="image/webp"/><img src="assets/interior-7.jpg" alt="Ducha con bañera y paneles de pared 3D" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap7">Ducha con bañera y paneles 3D tipo ola</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🐸">
-          <img src="assets/interior-8.jpg" alt="Mural del coquí sobre el banco artesanal de madera" loading="lazy"/>
+          <picture><source srcset="assets/interior-8.webp" type="image/webp"/><img src="assets/interior-8.jpg" alt="Mural del coquí sobre el banco artesanal de madera" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap8">El coquí y el árbol de mangó cuidan el banco artesanal de madera</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🚐">
-          <img src="assets/interior-9.jpg" alt="Vista hacia la cabina con TV encendida" loading="lazy"/>
+          <picture><source srcset="assets/interior-9.webp" type="image/webp"/><img src="assets/interior-9.jpg" alt="Vista hacia la cabina con TV encendida" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap9">Asientos de capitán y TV lista para el viaje</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🏖️">
-          <img src="assets/exterior-1.jpg" alt="El Ghetty Motor-Home estacionado frente a la playa entre palmeras" loading="lazy"/>
+          <picture><source srcset="assets/exterior-1.webp" type="image/webp"/><img src="assets/exterior-1.jpg" alt="El Ghetty Motor-Home estacionado frente a la playa entre palmeras" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap10">El Ghetty frente al mar, listo para tu aventura boricua</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🌴">
-          <img src="assets/exterior-2.jpg" alt="El motorhome enmarcado entre dos palmeras con el mar de fondo" loading="lazy"/>
+          <picture><source srcset="assets/exterior-2.webp" type="image/webp"/><img src="assets/exterior-2.jpg" alt="El motorhome enmarcado entre dos palmeras con el mar de fondo" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap11">Entre palmeras: postal perfecta del Caribe</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🌊">
-          <img src="assets/exterior-3.jpg" alt="El Ghetty estacionado a pasos de la orilla con el mar brillando al fondo" loading="lazy"/>
+          <picture><source srcset="assets/exterior-3.webp" type="image/webp"/><img src="assets/exterior-3.jpg" alt="El Ghetty estacionado a pasos de la orilla con el mar brillando al fondo" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap12">A pasos de la orilla, con el mar brillando al fondo</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🏝️">
-          <img src="assets/exterior-4.jpg" alt="Vista lateral del motorhome con su terracita y la bahía detrás" loading="lazy"/>
+          <picture><source srcset="assets/exterior-4.webp" type="image/webp"/><img src="assets/exterior-4.jpg" alt="Vista lateral del motorhome con su terracita y la bahía detrás" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap13">Vista lateral con su terracita y la bahía de fondo</figcaption>
         </figure>
         <figure class="mh-photo" data-emoji="🚁">
-          <img src="assets/exterior-5.jpg" alt="Vista aérea del Ghetty Motor-Home sobre la arena de la costa" loading="lazy"/>
+          <picture><source srcset="assets/exterior-5.webp" type="image/webp"/><img src="assets/exterior-5.jpg" alt="Vista aérea del Ghetty Motor-Home sobre la arena de la costa" loading="lazy" decoding="async"/></picture>
           <figcaption data-i18n="mh.cap14">Vista aérea: el Ghetty sobre la arena de la costa</figcaption>
         </figure>
         </div>
@@ -309,7 +311,7 @@
               <div class="price-amount"><sup>$</sup><span id="nightlyRateDisplay">120</span></div>
             </div>
           </div>
-          <p class="pricing-fee-note" data-i18n="pkg0.cleaningFee">+ $40 cargo de limpieza (1 vez por reservación)</p>
+          <p class="pricing-fee-note" data-i18n="pkg0.cleaningFee">+ $40 cargo de limpieza (una vez por reservación; total antes del pago)</p>
           <ul class="pricing-includes">
             <li data-i18n="pkg0.inc1">✅ Motorhome completo para ti</li>
             <li data-i18n="pkg0.inc2">✅ A/C, cocina, baño y TV</li>
@@ -333,6 +335,7 @@
             <div class="price-option">
               <span class="price-label" data-i18n-html="pricing.privateGroup">Grupo privado <small>(hasta 6)</small></span>
               <div class="price-amount group"><sup>$</sup>450</div>
+              <small class="price-detail" data-i18n="pricing.groupTotal">total por grupo (hasta 6)</small>
             </div>
           </div>
           <ul class="pricing-includes">
@@ -359,6 +362,7 @@
             <div class="price-option">
               <span class="price-label" data-i18n-html="pricing.privateGroup">Grupo privado <small>(hasta 6)</small></span>
               <div class="price-amount group"><sup>$</sup>600</div>
+              <small class="price-detail" data-i18n="pricing.groupTotal">total por grupo (hasta 6)</small>
             </div>
           </div>
           <ul class="pricing-includes">
@@ -446,7 +450,7 @@
             <button class="cal-nav" id="calNext" aria-label="Mes siguiente">&#8594;</button>
           </div>
           <div class="cal-weekdays" id="calWeekdays"></div>
-          <div class="cal-grid" id="calGrid"></div>
+          <div class="cal-grid" id="calGrid" role="group" aria-label="Calendario de disponibilidad" aria-live="polite"></div>
           <div class="cal-legend">
             <span class="legend-item"><span class="legend-dot legend-dot--free"></span><span data-i18n="book.legendFree">Disponible</span></span>
             <span class="legend-item"><span class="legend-dot legend-dot--booked"></span><span data-i18n="book.legendBooked">Ocupado</span></span>

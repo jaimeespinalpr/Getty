@@ -19,7 +19,8 @@ const TRANSLATIONS = {
 
     'hero.title':    'La Playa,<br/><em>A Tu Manera</em>',
     'hero.sub':      'Experiencias privadas en el camper temático más chévere de la isla.<br/>Hasta 6 personas · Playas espectaculares · Ambiente 100% local',
-    'hero.cta':      'Reservar Ahora',
+    'hero.cta':      'Reservar experiencia de playa',
+    'hero.ctaRental': 'Rentar motorhome por noche',
     'hero.ctaGhost': 'Ver Precios',
     'hero.stat1':    'Personas máx.',
     'hero.stat2':    'De experiencia',
@@ -46,6 +47,7 @@ const TRANSLATIONS = {
     'pricing.title':        'Elige tu Aventura',
     'pricing.sub':          'Precios transparentes, sin sorpresas. ¡Más personas = más ahorro!',
     'pricing.perPerson':    'Por persona',
+    'pricing.groupTotal':   'total por grupo (hasta 6)',
     'pricing.or':           'ó',
     'pricing.privateGroup': 'Grupo privado <small>(hasta 6)</small>',
     'pricing.popular':      '⭐ Más Popular',
@@ -70,7 +72,7 @@ const TRANSLATIONS = {
     'pkg0.name':     'Renta por Noche',
     'pkg0.duration': 'Quédate en el Ghetty',
     'pkg0.perNight': 'Por noche',
-    'pkg0.cleaningFee': '+ $40 cargo de limpieza (1 vez por reservación)',
+    'pkg0.cleaningFee': '+ $40 cargo de limpieza (una vez por reservación; total antes del pago)',
     'pkg0.inc1':     '✅ Motorhome completo para ti',
     'pkg0.inc2':     '✅ A/C, cocina, baño y TV',
     'pkg0.inc3':     '✅ Fechas sincronizadas con Airbnb',
@@ -196,7 +198,8 @@ const TRANSLATIONS = {
 
     'hero.title':    'The Beach,<br/><em>Your Way</em>',
     'hero.sub':      'Private experiences aboard the most iconic Puerto Rican camper on the island.<br/>Up to 6 people · Spectacular beaches · 100% local vibes',
-    'hero.cta':      'Book Now',
+    'hero.cta':      'Book a beach experience',
+    'hero.ctaRental': 'Rent the motorhome overnight',
     'hero.ctaGhost': 'See Prices',
     'hero.stat1':    'People max.',
     'hero.stat2':    'Of experience',
@@ -223,6 +226,7 @@ const TRANSLATIONS = {
     'pricing.title':        'Choose Your Adventure',
     'pricing.sub':          'Transparent pricing, no surprises. More people = more savings!',
     'pricing.perPerson':    'Per person',
+    'pricing.groupTotal':   'total per group (up to 6)',
     'pricing.or':           'or',
     'pricing.privateGroup': 'Private group <small>(up to 6)</small>',
     'pricing.popular':      '⭐ Most Popular',
@@ -247,7 +251,7 @@ const TRANSLATIONS = {
     'pkg0.name':     'Nightly Rental',
     'pkg0.duration': 'Stay in the Ghetty',
     'pkg0.perNight': 'Per night',
-    'pkg0.cleaningFee': '+ $40 cleaning fee (charged once per booking)',
+    'pkg0.cleaningFee': '+ $40 cleaning fee (once per booking; total shown before payment)',
     'pkg0.inc1':     '✅ The whole motorhome to yourself',
     'pkg0.inc2':     '✅ A/C, kitchen, bathroom & TV',
     'pkg0.inc3':     '✅ Dates synced with Airbnb',
@@ -426,9 +430,15 @@ window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
-hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+hamburger.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', String(open));
+});
 mobileMenu.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  });
 });
 
 // Language switcher click handlers
@@ -500,31 +510,63 @@ function relativeDate(isoStr) {
 function buildCard(post) {
   const card = document.createElement('a');
   card.className = 'ig-card';
-  card.href = post.permalink || 'https://www.instagram.com/ghettymotorhome/';
+  const permalink = safeHttpUrl(post.permalink) || 'https://www.instagram.com/ghettymotorhome/';
+  card.href = permalink;
   card.target = '_blank';
   card.rel = 'noopener noreferrer';
 
   const isVideo = post.media_type === 'VIDEO' || post.media_type === 'REELS';
   const isAlbum = post.media_type === 'CAROUSEL_ALBUM';
-  const badge   = isVideo ? '▶ Video' : isAlbum ? '⊞ Album' : '';
-  const caption = (post.caption || '').replace(/</g, '&lt;').substring(0, 200);
+  const badge = isVideo ? '▶ Video' : isAlbum ? '⊞ Album' : '';
+  const caption = String(post.caption || '').slice(0, 200);
+  const mediaUrl = safeHttpUrl(post.media_url);
+  const thumbnailUrl = safeHttpUrl(post.thumbnail_url);
 
-  card.innerHTML = `
-    <div class="ig-card-img-wrap">
-      ${isVideo
-        ? `<video src="${post.media_url}" poster="${post.thumbnail_url || ''}" muted playsinline loop preload="none" fetchpriority="low"></video>`
-        : `<img src="${post.media_url}" alt="${caption.substring(0,80)}" loading="lazy" fetchpriority="low" width="280" height="280"/>`
-      }
-      <div class="ig-card-overlay">
-        <span>🔗 ${TRANSLATIONS[currentLang]['ig.viewPost'] || 'View on Instagram'}</span>
-      </div>
-      ${badge ? `<span class="ig-type-badge">${badge}</span>` : ''}
-    </div>
-    <div class="ig-card-body">
-      <p class="ig-card-caption">${caption || '🚐🏝️ Ghetty Motor-Home'}</p>
-      <p class="ig-card-date">${relativeDate(post.timestamp)}</p>
-    </div>
-  `;
+  const imageWrap = document.createElement('div');
+  imageWrap.className = 'ig-card-img-wrap';
+  if (mediaUrl && isVideo) {
+    const video = document.createElement('video');
+    video.src = mediaUrl;
+    if (thumbnailUrl) video.poster = thumbnailUrl;
+    video.muted = true;
+    video.playsInline = true;
+    video.loop = true;
+    video.preload = 'none';
+    video.setAttribute('fetchpriority', 'low');
+    imageWrap.appendChild(video);
+  } else if (mediaUrl) {
+    const image = document.createElement('img');
+    image.src = mediaUrl;
+    image.alt = caption.slice(0, 80);
+    image.loading = 'lazy';
+    image.setAttribute('fetchpriority', 'low');
+    image.width = 280;
+    image.height = 280;
+    imageWrap.appendChild(image);
+  }
+  const overlay = document.createElement('div');
+  overlay.className = 'ig-card-overlay';
+  const overlayText = document.createElement('span');
+  overlayText.textContent = `🔗 ${TRANSLATIONS[currentLang]['ig.viewPost'] || 'View on Instagram'}`;
+  overlay.appendChild(overlayText);
+  imageWrap.appendChild(overlay);
+  if (badge) {
+    const typeBadge = document.createElement('span');
+    typeBadge.className = 'ig-type-badge';
+    typeBadge.textContent = badge;
+    imageWrap.appendChild(typeBadge);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'ig-card-body';
+  const captionEl = document.createElement('p');
+  captionEl.className = 'ig-card-caption';
+  captionEl.textContent = caption || '🚐🏝️ Ghetty Motor-Home';
+  const dateEl = document.createElement('p');
+  dateEl.className = 'ig-card-date';
+  dateEl.textContent = relativeDate(post.timestamp);
+  body.append(captionEl, dateEl);
+  card.append(imageWrap, body);
 
   if (isVideo) {
     const vid = card.querySelector('video');
@@ -532,6 +574,15 @@ function buildCard(post) {
     card.addEventListener('mouseleave', () => { if (vid) { vid.pause(); vid.currentTime = 0; } });
   }
   return card;
+}
+
+function safeHttpUrl(value) {
+  try {
+    const url = new URL(String(value || ''), window.location.href);
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
+  } catch {
+    return '';
+  }
 }
 
 // Placeholder card data (keys into TRANSLATIONS)
